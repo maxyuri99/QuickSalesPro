@@ -1,12 +1,15 @@
-import { useState } from 'react'
 import { RoutesMain } from './routes'
+import './styles/index.scss'
+import { ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.min.css"
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
-      <RoutesMain />
+        <RoutesMain />
+
+        <ToastContainer position="bottom-right" autoClose={2 * 1000} />
     </>
   )
 }
