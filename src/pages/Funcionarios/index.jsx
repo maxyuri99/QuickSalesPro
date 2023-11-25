@@ -1,7 +1,11 @@
+import { DefaultTemplate } from "../../components/DefaultTemplate"
+
 export const Funcionarios = () => {
-    return(
+    return (
         <main>
-            <h1>Funcionarios do sistema Quick Sales Pro</h1>
+            <DefaultTemplate>
+                <h1>Funcionarios do sistema Quick Sales Pro</h1>
+            </DefaultTemplate>
         </main>
     )
 }
