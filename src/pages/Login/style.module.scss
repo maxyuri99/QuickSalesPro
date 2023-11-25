@@ -1,0 +1,29 @@
+%flex {
+    display: flex;
+    flex-direction: column;
+}
+
+.flexBox {
+    @extend %flex;
+    align-items: center;
+    gap: 2rem;
+
+    img {
+        max-width: 9rem;
+    }
+
+    & > div:last-child {
+        width: clamp(324px, 50vw, 400px);
+        @extend %flex;
+        gap: 2rem;
+
+        background: var(--grey-2);
+        padding: 42px 1.375rem;
+        border-radius: 0.25rem;
+        
+        & > h1:first-child {
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+    }
+}

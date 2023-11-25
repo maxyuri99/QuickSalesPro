@@ -1,0 +1,19 @@
+%buttonDefaults{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    font-size: 1.125rem;
+    font-weight: 800;
+
+    transition: .4s;
+}
+
+.btn{
+    @extend %buttonDefaults;
+}
+
+.link{
+    @extend %buttonDefaults;
+}
