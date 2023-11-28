@@ -1,9 +1,14 @@
 :root{
-    --color-primary:  #0026D9;
+    --font-primary: 'Montserrat', sans-serif;
+    --color-primary:  #42b682;
+    --color-primary-focus:  #4a66e2;
     --color-secondary:  #002198;
-    --color-error:  #59323F;
+    --color-focus:  #ff7187;
     --color-red: #E70327;
     --color-sucess: #3FE864;
+
+    --background-all: #1c1c2b;
+    --background-2: #27293d;
 
     --grey-0: #F8F9FA;
     --grey-1: #F0F1F2;
@@ -11,5 +16,7 @@
     --grey-3: #343B41;
     --grey-4: #212529;
     --grey-5: #121214;
+
+    --background: #F0F1F2;
     
 }

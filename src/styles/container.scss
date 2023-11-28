@@ -3,3 +3,13 @@
     max-width: 1200px;
     margin: 0 auto;
 }
+
+.background{ 
+    min-height: 100vh;
+    background-color: var(--background-all);
+}
+
+.content {
+    margin-left: 340px; 
+    padding: 20px;
+}

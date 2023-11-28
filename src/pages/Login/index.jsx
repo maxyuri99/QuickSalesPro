@@ -4,11 +4,13 @@ import styles from "./style.module.scss"
 
 export const Login = () => {
     return (
-        <main className={pageStyles.pageBox}>
-            <div className="container">
-                <div className={styles.flexBox}> 
-                    <h1>Login</h1>
-                    <LoginForm />
+        <main className="background">
+            <div className={pageStyles.pageBox}>
+                <div className="container">
+                    <div className={styles.flexBox}>
+                        <h1 className="title center grey0">Elite Sales Pro</h1>
+                        <LoginForm />
+                    </div>
                 </div>
             </div>
         </main>

@@ -6,15 +6,15 @@ export const InputPassword = forwardRef(({ error, label, ...rest }, ref) => {
    const [isHidden, setIsHidden] = useState(true)
 
    return (
-      <div>
-         <label>{label}</label>
+      <div className="flexgap1">
+         <label className="paragraph center grey2">{label}</label>
          <div>
-            <input type={isHidden ? "password" : "text"} ref={ref} {...rest} />
-            <button type="button" onClick={() => setIsHidden(!isHidden)}>
+            <input type={isHidden ? "password" : "text"} className="input paragraph" ref={ref} {...rest} />
+            {/* <button type="button" className="paragraph grey0" onClick={() => setIsHidden(!isHidden)}>
                {isHidden ? <MdVisibility /> : <MdVisibilityOff />}
-            </button>
+            </button> */}
          </div>
-         {error ? <p>{error.message}</p> : null}
+         {error ? <p className="paragraph negative center">{error.message}</p> : null}
       </div>
    )
 })

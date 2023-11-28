@@ -5,7 +5,7 @@ export const SaleCard = ({ sale }) => {
     return (
         <li>
             <div>
-                <span className="paragraph">
+                <span className="paragraph grey1">
                     <strong>Id Venda: {sale.id_venda}</strong>
                     Cliente: {sale.nome_cliente}
                     Nome Usuario: {sale.nome_usuario}
@@ -16,18 +16,14 @@ export const SaleCard = ({ sale }) => {
                     Conta: {sale.conta}
                     Data: {sale.dt_ger}
                 </span>
-                <p className="paragraph">{sale.content}</p>
             </div>
             <div>
-                <button title="Editar" aria-label="edit">
+                <button title="Editar" aria-label="edit" className="paragraph grey2">
                     <MdEdit />
                 </button>
-                <button title="Remover" aria-label="remove">
-                    <MdDelete />
-                </button>
-                <Link to="" title="Visualizar nota" aria-label="view">
+                <button title="Visualizar nota" aria-label="view" className="paragraph grey2">
                     <MdVisibility />
-                </Link>
+                </button>
             </div>
         </li>
     )

@@ -11,13 +11,14 @@
     img {
         max-width: 9rem;
     }
+    
 
     & > div:last-child {
         width: clamp(324px, 50vw, 400px);
         @extend %flex;
         gap: 2rem;
 
-        background: var(--grey-2);
+        
         padding: 42px 1.375rem;
         border-radius: 0.25rem;
         
