@@ -1,7 +1,11 @@
+import { DefaultTemplate } from "../../components/DefaultTemplate"
+
 export const TipoPagamento = () => {
-    return(
+    return (
         <main>
-            <h1>TipoPagamento do sistema Quick Sales Pro</h1>
+            <DefaultTemplate>
+                <h1>TipoPagamento do sistema Quick Sales Pro</h1>
+            </DefaultTemplate>
         </main>
     )
 }

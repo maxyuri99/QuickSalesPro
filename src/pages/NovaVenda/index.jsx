@@ -1,7 +1,11 @@
-export const NovaVenda = () => { 
+import { DefaultTemplate } from "../../components/DefaultTemplate"
+
+export const NovaVenda = () => {
     return (
         <main>
-            <h1>Nova Venda</h1>
+            <DefaultTemplate>
+                <h1>Nova Venda</h1>
+            </DefaultTemplate>
         </main>
     )
 }

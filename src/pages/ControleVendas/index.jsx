@@ -1,7 +1,14 @@
+import { DefaultTemplate } from "../../components/DefaultTemplate"
+import { SaleListComp } from "../../components/SaleList"
+
 export const ControleVendas = () => {
     return (
-        <main>
-            <h1>Controle de Vendas</h1>
-        </main>
+        <DefaultTemplate>
+            <main>
+                <div>
+                    <SaleListComp/>
+                </div>
+            </main>
+        </DefaultTemplate>
     )
 }

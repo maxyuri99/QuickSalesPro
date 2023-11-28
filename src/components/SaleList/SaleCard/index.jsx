@@ -1,0 +1,34 @@
+import { MdEdit, MdDelete, MdVisibility } from "react-icons/md"
+import { Link } from "react-router-dom"
+
+export const SaleCard = ({ sale }) => {
+    return (
+        <li>
+            <div>
+                <span className="paragraph">
+                    <strong>Id Venda: {sale.id_venda}</strong>
+                    Cliente: {sale.nome_cliente}
+                    Nome Usuario: {sale.nome_usuario}
+                    Plano: {sale.nome_produto}
+                    Etapa: {sale.nome_etapa}
+                    Banco: {sale.banco}
+                    Agencia: {sale.agencia}
+                    Conta: {sale.conta}
+                    Data: {sale.dt_ger}
+                </span>
+                <p className="paragraph">{sale.content}</p>
+            </div>
+            <div>
+                <button title="Editar" aria-label="edit">
+                    <MdEdit />
+                </button>
+                <button title="Remover" aria-label="remove">
+                    <MdDelete />
+                </button>
+                <Link to="" title="Visualizar nota" aria-label="view">
+                    <MdVisibility />
+                </Link>
+            </div>
+        </li>
+    )
+}
