@@ -1,0 +1,18 @@
+.flexbox {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 10px;
+
+    gap: 10px;
+    
+
+    button {
+        margin-top: 10px;
+    }
+}
+
+.formcontainer{
+    height: 3rem;
+}

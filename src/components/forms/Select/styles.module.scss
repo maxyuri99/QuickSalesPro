@@ -1,0 +1,59 @@
+.flexboxSelect {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+    position: relative;
+    z-index: 1; /* Adicione esta linha */
+}
+
+.divbox {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: 3rem;
+    padding: 0 1.01519rem;
+    border-radius: 0.25rem;
+    background: var(--grey-2);
+    gap: 5px;
+
+    & > div:first-child {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: calc(100% - 30px);
+    }
+}
+
+.itensbox {
+    position: absolute;
+    top: 4rem;
+    left: 0;
+    width: 100%;
+    max-height: 300px; /* Ajuste conforme necessário */
+    overflow-y: auto; /* Adicione esta linha para criar uma barra de rolagem vertical quando necessário */
+    display: flex;
+    flex-direction: column;
+    padding: 9px;
+    background: var(--background-2);
+    border-radius: 0.3125rem;
+    gap: 5px;
+    z-index: 2;
+
+    .childDivbox {
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        height: 3rem;
+        padding: 0 1.01519rem;
+        border-radius: 0.25rem;
+        background: var(--grey-2);
+
+        &:hover {
+            background: var(--background-all);
+        }
+    }
+}
+

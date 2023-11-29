@@ -1,15 +1,15 @@
 import { Link } from "react-router-dom"
 import { UserContext } from "../../providers/UserContext"
 import { useContext } from "react"
-import "./style.scss"
+import styles from "./style.module.scss"
 
 export const Header = ({ }) => {
     const { user, userLogout } = useContext(UserContext)
 
     return (
         <header>
-            <div className="flexbox">
-                <div className="header">
+            <div className={styles.flexbox}>
+                <div className={styles.header}>
                     <div>
                         <div className="paragraph bold center">
                             <p>{user?.nome}</p>
