@@ -5,5 +5,5 @@ import { useContext } from "react"
 export const PrivateRoutes = () => {
    const { user } = useContext(UserContext)
 
-   return user ? <Outlet /> : <Navigate to="/" />
+   return (user.cargo !== 0) ? <Outlet /> : <Navigate to="/" />
 }

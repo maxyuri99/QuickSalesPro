@@ -22,19 +22,24 @@ export const Header = ({ }) => {
                                     Dashboard
                                 </Link>
                             </li>
-                            <li>
-                                <Link to='/nova_venda' className="paragraph">
-                                    Nova Venda
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to='/controle_vendas' className="paragraph">
-                                    Controle de Vendas
-                                </Link>
-                            </li>
+                            {(user.cargo === 1 || user.cargo === 4 || user.cargo === 5) ? (
+                                <li>
+                                    <Link to='/controle_vendas' className="paragraph">
+                                        Controle de Vendas
+                                    </Link>
+                                </li>
+                            ) : null}
+
+                            {(user.cargo !== 0) ? (
+                                <li>
+                                    <Link to='/nova_venda' className="paragraph">
+                                        Nova Venda
+                                    </Link>
+                                </li>
+                            ) : null}
 
                             <li>
-                                <button onClick={() => userLogout()} className="btn solid primaryNegative hover ">
+                                <button onClick={() => userLogout("Logout feito com sucesso!")} className="btn solid primaryNegative hover ">
                                     Sair
                                 </button>
                             </li>

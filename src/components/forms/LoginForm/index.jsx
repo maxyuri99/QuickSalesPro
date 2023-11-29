@@ -23,11 +23,12 @@ export const LoginForm = () => {
     const { userLogin } = useContext(UserContext)
 
     const submit = (formData) => {
-        userLogin(formData, setLoading, reset)
+        const trimmedLogin = formData.login.trim()
+        userLogin({ ...formData, login: trimmedLogin }, setLoading, reset)
     }
 
     return (
-        <form onSubmit={handleSubmit(submit)} > 
+        <form onSubmit={handleSubmit(submit)} >
             <div className="flexgap2">
                 <Input label="Login:" type="text" {...register("login")} error={errors.login} disabled={loading} />
                 <InputPassword label="Senha:" {...register("senha")} error={errors.senha} disabled={loading} />

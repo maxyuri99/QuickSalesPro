@@ -4,7 +4,7 @@ import styles from "./style.module.scss"
 
 export const Login = () => {
     return (
-        <main className="background">
+        <main className={styles.background}>
             <div className={pageStyles.pageBox}>
                 <div className="container">
                     <div className={styles.flexBox}>
