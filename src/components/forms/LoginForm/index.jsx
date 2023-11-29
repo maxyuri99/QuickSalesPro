@@ -23,16 +23,21 @@ export const LoginForm = () => {
     const { userLogin } = useContext(UserContext)
 
     const submit = (formData) => {
-        userLogin(formData, setLoading, reset)
+        const trimmedLogin = formData.login.trim()
+        userLogin({ ...formData, login: trimmedLogin }, setLoading, reset)
     }
 
     return (
-        <form onSubmit={handleSubmit(submit)} className={styles.flexbox}>
-            <Input label="Seu Login" type="text" placeholder="joao.carlor" {...register("login")} error={errors.login} disabled={loading} />
-            <InputPassword label="Sua Senha" {...register("senha")} error={errors.senha} disabled={loading} />
-            <div>
-                <button type="submit">Entrar</button>
-                {loading ? "acessando..." : "acessar"}
+        <form onSubmit={handleSubmit(submit)} >
+            <div className="flexgap2">
+                <Input label="Login:" type="text" {...register("login")} error={errors.login} disabled={loading} />
+                <InputPassword label="Senha:" {...register("senha")} error={errors.senha} disabled={loading} />
+                <div className="flexgap2">
+                    <button type="submit" className="btn solid primary hover full">Entrar</button>
+                    <div className="paragraph center">
+                        {loading ? "acessando..." : ""}
+                    </div>
+                </div>
             </div>
         </form>
     )

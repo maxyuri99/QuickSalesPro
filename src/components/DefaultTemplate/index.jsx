@@ -6,7 +6,7 @@ export const DefaultTemplate = ({ children }) => {
         <>
             <Header />
              {children}
-            <Footer />
+            {/* <Footer /> */}
         </>
     )
 }

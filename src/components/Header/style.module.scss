@@ -1,0 +1,52 @@
+.flexbox {
+    display: flex;
+}
+
+.header {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    bottom: 20px;
+    width: 280px;
+    min-height: 100%;
+    max-height: calc(100vh - 705px);
+    background-color: var(--color-primary);
+    color: #fff;
+    padding-top: 20px;
+    border-radius: 8px;
+
+    padding: 1rem;
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    li {
+        margin-top: 15px;
+        margin-bottom: 10px;
+    }
+
+    a {
+        display: block;
+        padding: 15px;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 20px;
+    }
+
+    a:hover {
+        background-color: var(--grey-3); 
+    }
+
+    .active {
+        background-color: #555;
+        /* Cor de fundo para o link ativo */
+    }
+
+    button{
+        width: 100%;
+    }
+
+}
+            
