@@ -14,7 +14,7 @@ axios.interceptors.request.use((config) => {
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename='/quicksalespro'>
       <UserProvider>
         <App />
       </UserProvider>
