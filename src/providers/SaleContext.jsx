@@ -62,7 +62,7 @@ export const SaleProvider = ({ children }) => {
                 }
             })
 
-            Navigate("/nova_venda")
+            Navigate("/quicksalespro/nova_venda")
 
             toast.success("Cadastro realizado com sucesso!")
 

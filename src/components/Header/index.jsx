@@ -18,13 +18,13 @@ export const Header = ({ }) => {
                     <nav>
                         <ul>
                             <li>
-                                <Link to='/' className="paragraph">
+                                <Link to='/quicksalespro/' className="paragraph">
                                     Dashboard
                                 </Link>
                             </li>
                             {(user.cargo === 1 || user.cargo === 4 || user.cargo === 5) ? (
                                 <li>
-                                    <Link to='/controle_vendas' className="paragraph">
+                                    <Link to='/quicksalespro/controle_vendas' className="paragraph">
                                         Controle de Vendas
                                     </Link>
                                 </li>
@@ -32,7 +32,7 @@ export const Header = ({ }) => {
 
                             {(user.cargo !== 0) ? (
                                 <li>
-                                    <Link to='/nova_venda' className="paragraph">
+                                    <Link to='/quicksalespro/nova_venda' className="paragraph">
                                         Nova Venda
                                     </Link>
                                 </li>

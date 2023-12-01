@@ -56,7 +56,7 @@ export const UserProvider = ({ children }) => {
                 // Handle token renewal failure (e.g., logout user)
                 console.error("Token renewal failed:", error)
                 setUser(null)
-                navigate("/")
+                navigate("/quicksalespro/")
             } finally {
                 setLoading(false)
             }
@@ -114,7 +114,7 @@ export const UserProvider = ({ children }) => {
 
     const userLogout = (toastLabel) => {
         setUser({cargo:0})
-        navigate("/")
+        navigate("/quicksalespro/")
         toast.success(toastLabel)
         localStorage.removeItem("@TOKENACESS")
         localStorage.removeItem("@TOKENREFRESH")
