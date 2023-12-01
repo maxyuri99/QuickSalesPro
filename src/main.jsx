@@ -6,7 +6,7 @@ import { UserProvider } from './providers/UserContext.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename='/quicksalespro'>
       <UserProvider>
           <App />
       </UserProvider>
