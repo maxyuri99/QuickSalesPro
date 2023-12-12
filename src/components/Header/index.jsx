@@ -18,7 +18,7 @@ export const Header = ({ }) => {
                     <nav>
                         <ul>
                             <li>
-                                <Link to='/quicksalespro/' className="paragraph">
+                                <Link to='/quicksalespro/dashboard' className="paragraph">
                                     Dashboard
                                 </Link>
                             </li>

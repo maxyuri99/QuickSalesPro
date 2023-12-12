@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md"
 import styles from "./styles.module.scss"
 
-export const Select = ({ options, id, onChange, disabled, placeholder , label }) => {
+export const Select = ({ options, id, onChange, disabled, placeholder, label, setErrorVerify, errorVerify, name, value, selectChange }) => {
     const [isOpen, setIsOpen] = useState(false)
     const dropdownRef = useRef(null);
 
@@ -14,6 +14,11 @@ export const Select = ({ options, id, onChange, disabled, placeholder , label })
 
     const handleOptionClick = (option) => {
         if (!disabled) {
+            setErrorVerify({
+                ...errorVerify,
+                hasError: false,
+            })
+            selectChange(name, option.id)
             onChange(option.id)
             toggleDropdown()
         }
@@ -56,6 +61,10 @@ export const Select = ({ options, id, onChange, disabled, placeholder , label })
                         </div>
                     ))}
                 </div>
+            )}
+
+            {errorVerify.hasError && errorVerify.errorField === name && (
+                <p className="paragraph negative center">{errorVerify.message}</p>
             )}
         </div>
     )

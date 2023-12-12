@@ -1,13 +1,17 @@
-import { useEffect } from "react"
+import { useContext, useEffect } from "react"
 import { useState } from "react"
 import { createContext } from "react"
 import { apiQsp } from "../services/api"
 import { toast } from "react-toastify"
-import { Navigate } from "react-router-dom"
+
+import { UserContext } from "./UserContext"
 
 export const SaleContext = createContext({})
 
+
 export const SaleProvider = ({ children }) => {
+    const { userLogout, navigateUser } = useContext(UserContext)
+
     // ###### pagina de Controle de Vendas ######
     const [saleList, setSaleList] = useState([])
     const [loadingListSales, setLoadingListSales] = useState(false)
@@ -34,7 +38,8 @@ export const SaleProvider = ({ children }) => {
 
     // ########################################################
 
-    // ####### Pagina de nova venda ######
+
+    // ####### Pagina de nova venda ##########################
     const [dataFetched, setDataFetched] = useState(false)
 
     const [selectedUsuario, setSelectedUsuario] = useState(0)
@@ -56,14 +61,11 @@ export const SaleProvider = ({ children }) => {
         try {
             setLoadingNewSale(true)
 
-            await apiQsp.post("/v1/vendas/registro", formData,{
+            await apiQsp.post("/v1/vendas/registro", formData, {
                 headers: {
                     Authorization: `Bearer ${tokenRegister}`
                 }
             })
-
-            Navigate("/quicksalespro/nova_venda")
-
             toast.success("Cadastro realizado com sucesso!")
 
         } catch (error) {
@@ -76,6 +78,7 @@ export const SaleProvider = ({ children }) => {
             setLoadingNewSale(false)
         }
     }
+
     const tokenEffect = localStorage.getItem("@TOKENACESS")
 
     useEffect(() => {
@@ -91,6 +94,7 @@ export const SaleProvider = ({ children }) => {
                 setSelectUsuario(data)
             } catch (error) {
                 console.error("Erro ao buscar usuários:", error)
+                userLogout("Acesso expirado, faça login novamente")
             } finally {
                 setLoadingUsuario(false)
             }
@@ -105,6 +109,7 @@ export const SaleProvider = ({ children }) => {
                 setSelectProdutos(data)
             } catch (error) {
                 console.error("Erro ao buscar produtos:", error)
+                userLogout("Acesso expirado, faça login novamente")
             } finally {
                 setLoadingProdutos(false)
             }
@@ -119,6 +124,7 @@ export const SaleProvider = ({ children }) => {
                 setSelectFormPag(data)
             } catch (error) {
                 console.error("Erro ao buscar formas de pagamento:", error)
+                userLogout("Acesso expirado, faça login novamente")
             } finally {
                 setLoadingFormPag(false)
             }
@@ -142,7 +148,7 @@ export const SaleProvider = ({ children }) => {
             fetchData()
         }
     }, [tokenEffect])
-
+    // #############################################################################
     return (
         <SaleContext.Provider value={{
             saleList, getSales, saleRegister,

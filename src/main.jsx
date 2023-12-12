@@ -4,6 +4,7 @@ import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 import { UserProvider } from './providers/UserContext.jsx'
 import axios from 'axios'
+import { SaleProvider } from "../src/providers/SaleContext.jsx"
 
 axios.interceptors.request.use((config) => {
   config.headers['Access-Control-Allow-Origin'] = '*'
@@ -12,11 +13,15 @@ axios.interceptors.request.use((config) => {
   return config
 })
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+const rootElement = document.getElementById('root')
+
+ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
     <BrowserRouter>
       <UserProvider>
-        <App />
+        <SaleProvider>
+          <App />
+        </SaleProvider>
       </UserProvider>
     </BrowserRouter>
   </React.StrictMode>,
