@@ -1,0 +1,15 @@
+
+.flexBox {
+
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    
+    & > input {
+        height: 3rem;
+        padding: 0 1.01519rem;
+        border-radius: 0.25rem;
+        background: var(--grey-2);
+    }
+
+}
