@@ -43,7 +43,7 @@ export const RegisterSaleForm = () => {
     const { selectedUsuario, selectedProdutos, selectedFormPag,
         setSelectedUsuario, setSelectedProdutos, setSelectedFormPag,
         selectUsuario, selectProdutos, selectFormPag,
-        loadingNewSale, saleRegister } = useContext(SaleContext)
+        loadingNewSale, saleRegister, getCEP } = useContext(SaleContext)
 
     const optionsRadio = [
         { value: "cpf", label: "CPF" },
@@ -493,6 +493,7 @@ export const RegisterSaleForm = () => {
                     {loadingNewSale ? "Cadastrando..." : "Cadastrar"}
                 </button>
             </form>
+            <button onClick={() => getCEP(88108330)}>getcep</button>
         </div>
     )
 }

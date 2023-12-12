@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react"
 import { useState } from "react"
 import { createContext } from "react"
-import { apiQsp } from "../services/api"
+import { apiCEP, apiQsp } from "../services/api"
 import { toast } from "react-toastify"
 
 import { UserContext } from "./UserContext"
@@ -76,6 +76,21 @@ export const SaleProvider = ({ children }) => {
             }
         } finally {
             setLoadingNewSale(false)
+        }
+    }
+
+    const getCEP = async (cep) => {
+        try {
+            setLoadingListSales(true)
+            const { data } = await apiCEP.get(`/api/cep/v1/${cep}`)
+
+            console.log(data)
+
+        } catch (error) {
+            console.log(error)
+            //res.status(500).json({ error: 'Internal Server Error' })
+        } finally {
+            setLoadingListSales(false)
         }
     }
 
@@ -156,7 +171,7 @@ export const SaleProvider = ({ children }) => {
             setSelectedUsuario, setSelectedProdutos, setSelectedFormPag,
             selectUsuario, selectProdutos, selectFormPag,
             loadingNewSale, loadingUsuario, loadingProdutos, loadingFormPag,
-            loadingListSales, setLoadingListSales
+            loadingListSales, setLoadingListSales, getCEP
         }}>
             {children}
         </SaleContext.Provider>

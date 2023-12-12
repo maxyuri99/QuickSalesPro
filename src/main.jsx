@@ -4,7 +4,6 @@ import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 import { UserProvider } from './providers/UserContext.jsx'
 import axios from 'axios'
-import { SaleProvider } from "../src/providers/SaleContext.jsx"
 
 axios.interceptors.request.use((config) => {
   config.headers['Access-Control-Allow-Origin'] = '*'
