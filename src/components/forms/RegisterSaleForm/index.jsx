@@ -8,6 +8,7 @@ import { registerSaleFormSchema } from "./registerSaleFormSchema"
 import styles from "./style.module.scss"
 import { MaskedInput } from "../InputMaskCPF"
 import { RadioSelector } from "../Radio"
+import { useEffect } from "react"
 
 
 const initialValues = {
@@ -43,7 +44,7 @@ export const RegisterSaleForm = () => {
     const { selectedUsuario, selectedProdutos, selectedFormPag,
         setSelectedUsuario, setSelectedProdutos, setSelectedFormPag,
         selectUsuario, selectProdutos, selectFormPag,
-        loadingNewSale, saleRegister, getCEP } = useContext(SaleContext)
+        loadingNewSale, saleRegister, getCEP, cepIten, setCepIten } = useContext(SaleContext)
 
     const optionsRadio = [
         { value: "cpf", label: "CPF" },
@@ -189,10 +190,18 @@ export const RegisterSaleForm = () => {
 
         window.scrollTo({
             top: 0,
-            behavior: 'smooth', 
+            behavior: 'smooth',
         })
 
+        setCepIten({})
+
     }
+
+    useEffect(() => {
+        if (values.cep.length === 8) {
+            getCEP(values.cep)
+        }
+    }, [values.cep])
 
     function handleChange(event) {
         setValues({
@@ -233,7 +242,6 @@ export const RegisterSaleForm = () => {
                     />
                 </div>
                 <div className={styles.flexbox}>
-
                     {selectedRadio === "cpf" && (
                         <>
                             <MaskedInput
@@ -261,7 +269,7 @@ export const RegisterSaleForm = () => {
                                 {...register("nome_mae")}
                                 error={errors.nome_mae}
                                 disabled={loadingNewSale}
-                                placeholder="Nome da mãe do cliente"
+                                placeholder="Nome mãe do cliente"
                             />
                         </>
                     )}
@@ -307,7 +315,6 @@ export const RegisterSaleForm = () => {
                         {...register("dt_nascimento")}
                         error={errors.dt_nascimento}
                         disabled={loadingNewSale}
-                        placeholder="Selecione a data de nascimento do cliente"
                     />
                     <Input
                         label="Email"
@@ -315,7 +322,7 @@ export const RegisterSaleForm = () => {
                         {...register("email")}
                         error={errors.email}
                         disabled={loadingNewSale}
-                        placeholder="Digite aqui o email do cliente"
+                        placeholder="Email do cliente"
                     />
                     <MaskedInput
                         label="Telefone Principal"
@@ -362,28 +369,21 @@ export const RegisterSaleForm = () => {
                         setErrorVerify={setErrorVerify}
                     />
                     <Input
+                        label="Rua"
+                        type="text"
+                        value={cepIten?.street || ""}
+                        {...register("endereco")}
+                        error={errors.endereco}
+                        disabled={loadingNewSale}
+                        placeholder="Rua do cliente"
+                    />
+                    <Input
                         label="Numero Residencial"
                         type="text"
                         {...register("numero_end")}
                         error={errors.numero_end}
                         disabled={loadingNewSale}
-                        placeholder="Digite aqui o numero residencial do cliente"
-                    />
-                    <Input
-                        label="Bairro"
-                        type="text"
-                        {...register("bairro")}
-                        error={errors.bairro}
-                        disabled={loadingNewSale}
-                        placeholder="Digite aqui o bairro do cliente"
-                    />
-                    <Input
-                        label="Rua"
-                        type="text"
-                        {...register("endereco")}
-                        error={errors.endereco}
-                        disabled={loadingNewSale}
-                        placeholder="Digite aqui a rua do cliente"
+                        placeholder="Numero residencial"
                     />
                     <Input
                         label="Complemento"
@@ -391,23 +391,34 @@ export const RegisterSaleForm = () => {
                         {...register("complemento_end")}
                         error={errors.complemento_end}
                         disabled={loadingNewSale}
-                        placeholder="Digite aqui o complemento do endereço"
+                        placeholder="Complemento do endereço"
+                    />
+                    <Input
+                        label="Bairro"
+                        type="text"
+                        value={cepIten?.neighborhood || ""}
+                        {...register("bairro")}
+                        error={errors.bairro}
+                        disabled={loadingNewSale}
+                        placeholder="Bairro do cliente"
                     />
                     <Input
                         label="Cidade"
                         type="text"
+                        value={cepIten?.city || ""}
                         {...register("cidade")}
                         error={errors.cidade}
                         disabled={loadingNewSale}
-                        placeholder="Digite aqui a cidade do cliente"
+                        placeholder="Cidade do cliente"
                     />
                     <Input
                         label="UF"
                         type="text"
+                        value={cepIten?.state || ""}
                         {...register("uf")}
                         error={errors.uf}
                         disabled={loadingNewSale}
-                        placeholder="Digite aqui a UF do cliente"
+                        placeholder="UF do cliente"
                     />
                 </div>
 
@@ -446,7 +457,7 @@ export const RegisterSaleForm = () => {
                         id={selectedFormPag}
                         onChange={setSelectedFormPag}
                         disabled={loadingNewSale}
-                        placeholder="Selecione uma Froma de Pagamento"
+                        placeholder="Froma de Pagamento..."
                         label="Forma de Pagamento"
                         errorVerify={errorVerify}
                         setErrorVerify={setErrorVerify}
@@ -457,7 +468,7 @@ export const RegisterSaleForm = () => {
                         {...register("banco")}
                         error={errors.banco}
                         disabled={loadingNewSale}
-                        placeholder="Digite aqui o banco do cliente"
+                        placeholder="Banco do cliente"
                     />
                     <Input
                         label="Agencia"
@@ -465,7 +476,7 @@ export const RegisterSaleForm = () => {
                         {...register("agencia")}
                         error={errors.agencia}
                         disabled={loadingNewSale}
-                        placeholder="Digite aqui a agencia do cliente"
+                        placeholder="Agencia do cliente"
                     />
                     <Input
                         label="Conta"
@@ -473,7 +484,7 @@ export const RegisterSaleForm = () => {
                         {...register("conta")}
                         error={errors.conta}
                         disabled={loadingNewSale}
-                        placeholder="Digite aqui a conta do cliente"
+                        placeholder="Conta do cliente"
                     />
                     <Input
                         label="Observações"
@@ -481,7 +492,7 @@ export const RegisterSaleForm = () => {
                         {...register("observacao")}
                         error={errors.observacao}
                         disabled={loadingNewSale}
-                        placeholder="Digite aqui as Observações da venda"
+                        placeholder="Observações da venda"
                     />
                 </div>
 
@@ -493,7 +504,6 @@ export const RegisterSaleForm = () => {
                     {loadingNewSale ? "Cadastrando..." : "Cadastrar"}
                 </button>
             </form>
-            <button onClick={() => getCEP(88108330)}>getcep</button>
         </div>
     )
 }

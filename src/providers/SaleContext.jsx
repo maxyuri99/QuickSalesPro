@@ -42,18 +42,25 @@ export const SaleProvider = ({ children }) => {
     // ####### Pagina de nova venda ##########################
     const [dataFetched, setDataFetched] = useState(false)
 
+    // Item Selecionado
     const [selectedUsuario, setSelectedUsuario] = useState(0)
     const [selectedProdutos, setSelectedProdutos] = useState(0)
     const [selectedFormPag, setSelectedFormPag] = useState(0)
+    const [selectedBanco, setSelectedBanco] = useState(0)
 
+    // Itens que vem da API
     const [selectUsuario, setSelectUsuario] = useState()
     const [selectProdutos, setSelectProdutos] = useState()
     const [selectFormPag, setSelectFormPag] = useState()
+    const [selectBanco, setSelectBanco] = useState()
+
 
     const [loadingNewSale, setLoadingNewSale] = useState(false)
     const [loadingUsuario, setLoadingUsuario] = useState(false)
     const [loadingProdutos, setLoadingProdutos] = useState(false)
     const [loadingFormPag, setLoadingFormPag] = useState(false)
+
+    const [cepIten, setCepIten] = useState()
 
     const saleRegister = async (formData) => {
         const tokenRegister = localStorage.getItem("@TOKENACESS")
@@ -84,10 +91,11 @@ export const SaleProvider = ({ children }) => {
             setLoadingListSales(true)
             const { data } = await apiCEP.get(`/api/cep/v1/${cep}`)
 
-            console.log(data)
+            setCepIten(data)
 
         } catch (error) {
             console.log(error)
+            toast.error("CEP não encontrado")
             //res.status(500).json({ error: 'Internal Server Error' })
         } finally {
             setLoadingListSales(false)
@@ -171,7 +179,7 @@ export const SaleProvider = ({ children }) => {
             setSelectedUsuario, setSelectedProdutos, setSelectedFormPag,
             selectUsuario, selectProdutos, selectFormPag,
             loadingNewSale, loadingUsuario, loadingProdutos, loadingFormPag,
-            loadingListSales, setLoadingListSales, getCEP
+            loadingListSales, setLoadingListSales, getCEP, cepIten, setCepIten
         }}>
             {children}
         </SaleContext.Provider>
