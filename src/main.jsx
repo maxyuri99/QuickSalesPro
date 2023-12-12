@@ -19,9 +19,7 @@ ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
     <BrowserRouter>
       <UserProvider>
-        <SaleProvider>
-          <App />
-        </SaleProvider>
+        <App />
       </UserProvider>
     </BrowserRouter>
   </React.StrictMode>,
