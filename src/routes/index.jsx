@@ -40,7 +40,7 @@ export const RoutesMain = () => {
                 ) : null}
 
             </Route>
-            <Route path='/*' element={<ErrorPage />} />
+            <Route path='/*' element={<Login />} />
         </Routes>
     )
 }
