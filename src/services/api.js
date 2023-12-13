@@ -8,4 +8,9 @@ export const apiQsp = axios.create({
     withCredentials: true,
   })
 
+  export const apiCEP = axios.create({
+    baseURL: "https://brasilapi.com.br",
+    timeout: 4 * 1000,
+  })
+
   

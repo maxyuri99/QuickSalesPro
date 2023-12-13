@@ -1,13 +1,17 @@
-import { useEffect } from "react"
+import { useContext, useEffect } from "react"
 import { useState } from "react"
 import { createContext } from "react"
-import { apiQsp } from "../services/api"
+import { apiCEP, apiQsp } from "../services/api"
 import { toast } from "react-toastify"
-import { Navigate } from "react-router-dom"
+
+import { UserContext } from "./UserContext"
 
 export const SaleContext = createContext({})
 
+
 export const SaleProvider = ({ children }) => {
+    const { userLogout, navigateUser } = useContext(UserContext)
+
     // ###### pagina de Controle de Vendas ######
     const [saleList, setSaleList] = useState([])
     const [loadingListSales, setLoadingListSales] = useState(false)
@@ -34,21 +38,28 @@ export const SaleProvider = ({ children }) => {
 
     // ########################################################
 
-    // ####### Pagina de nova venda ######
+
+    // ####### Pagina de nova venda ##########################
     const [dataFetched, setDataFetched] = useState(false)
 
+    // Item Selecionado
     const [selectedUsuario, setSelectedUsuario] = useState(0)
     const [selectedProdutos, setSelectedProdutos] = useState(0)
     const [selectedFormPag, setSelectedFormPag] = useState(0)
+    const [selectedBanco, setSelectedBanco] = useState(0)
+    const [selectedDiaVenc, setSelectedDiaVenc] = useState(0)
 
+    // Itens que vem da API
     const [selectUsuario, setSelectUsuario] = useState()
     const [selectProdutos, setSelectProdutos] = useState()
     const [selectFormPag, setSelectFormPag] = useState()
+    const [selectBanco, setSelectBanco] = useState()
+    const [selectDiaVenc, setSelectDiaVenc] = useState()
 
     const [loadingNewSale, setLoadingNewSale] = useState(false)
-    const [loadingUsuario, setLoadingUsuario] = useState(false)
-    const [loadingProdutos, setLoadingProdutos] = useState(false)
-    const [loadingFormPag, setLoadingFormPag] = useState(false)
+    const [loadingItensSale, setLoadingItensSale] = useState(false)
+
+    const [cepIten, setCepIten] = useState()
 
     const saleRegister = async (formData) => {
         const tokenRegister = localStorage.getItem("@TOKENACESS")
@@ -56,14 +67,11 @@ export const SaleProvider = ({ children }) => {
         try {
             setLoadingNewSale(true)
 
-            await apiQsp.post("/v1/vendas/registro", formData,{
+            await apiQsp.post("/v1/vendas/registro", formData, {
                 headers: {
                     Authorization: `Bearer ${tokenRegister}`
                 }
             })
-
-            Navigate("/nova_venda")
-
             toast.success("Cadastro realizado com sucesso!")
 
         } catch (error) {
@@ -76,13 +84,30 @@ export const SaleProvider = ({ children }) => {
             setLoadingNewSale(false)
         }
     }
+
+    const getCEP = async (cep) => {
+        try {
+            setLoadingListSales(true)
+            const { data } = await apiCEP.get(`/api/cep/v1/${cep}`)
+
+            setCepIten(data)
+
+        } catch (error) {
+            console.log(error)
+            toast.error("CEP não encontrado")
+            //res.status(500).json({ error: 'Internal Server Error' })
+        } finally {
+            setLoadingListSales(false)
+        }
+    }
+
     const tokenEffect = localStorage.getItem("@TOKENACESS")
 
     useEffect(() => {
 
         const fetchData = async () => {
             try {
-                setLoadingUsuario(true)
+                setLoadingItensSale(true)
                 const { data } = await apiQsp.get("/v1/usuarios/all", {
                     headers: {
                         Authorization: `Bearer ${tokenEffect}`,
@@ -91,12 +116,13 @@ export const SaleProvider = ({ children }) => {
                 setSelectUsuario(data)
             } catch (error) {
                 console.error("Erro ao buscar usuários:", error)
+                userLogout("Acesso expirado, faça login novamente")
             } finally {
-                setLoadingUsuario(false)
+                setLoadingItensSale(false)
             }
 
             try {
-                setLoadingProdutos(true)
+                setLoadingItensSale(true)
                 const { data } = await apiQsp.get("/v1/produtos/all", {
                     headers: {
                         Authorization: `Bearer ${tokenEffect}`,
@@ -105,12 +131,13 @@ export const SaleProvider = ({ children }) => {
                 setSelectProdutos(data)
             } catch (error) {
                 console.error("Erro ao buscar produtos:", error)
+                userLogout("Acesso expirado, faça login novamente")
             } finally {
-                setLoadingProdutos(false)
+                setLoadingItensSale(false)
             }
 
             try {
-                setLoadingFormPag(true)
+                setLoadingItensSale(true)
                 const { data } = await apiQsp.get("/v1/FormPag/all", {
                     headers: {
                         Authorization: `Bearer ${tokenEffect}`,
@@ -119,9 +146,41 @@ export const SaleProvider = ({ children }) => {
                 setSelectFormPag(data)
             } catch (error) {
                 console.error("Erro ao buscar formas de pagamento:", error)
+                userLogout("Acesso expirado, faça login novamente")
             } finally {
-                setLoadingFormPag(false)
+                setLoadingItensSale(false)
             }
+
+            try {
+                setLoadingItensSale(true)
+                const { data } = await apiQsp.get("/v1/vendas/bancos", {
+                    headers: {
+                        Authorization: `Bearer ${tokenEffect}`,
+                    },
+                })
+                setSelectBanco(data)
+            } catch (error) {
+                console.error("Erro ao buscar Bancos:", error)
+                userLogout("Acesso expirado, faça login novamente")
+            } finally {
+                setLoadingItensSale(false)
+            }
+
+            try {
+                setLoadingItensSale(true)
+                const { data } = await apiQsp.get("/v1/vendas/venc", {
+                    headers: {
+                        Authorization: `Bearer ${tokenEffect}`,
+                    },
+                })
+                setSelectDiaVenc(data)
+            } catch (error) {
+                console.error("Erro ao buscar Data Vencimento:", error)
+                userLogout("Acesso expirado, faça login novamente")
+            } finally {
+                setLoadingItensSale(false)
+            }
+
 
             setSelectUsuario((prevSelectUsuario) =>
                 prevSelectUsuario.map((item) => ({ id: item.id_usuario, ...item }))
@@ -135,6 +194,14 @@ export const SaleProvider = ({ children }) => {
                 prevSelectFormPag.map((item) => ({ id: item.id_formpag, ...item }))
             )
 
+            setSelectBanco((prevSelectBanco) =>
+                prevSelectBanco.map((item) => ({ id: item.id_banco, ...item }))
+            )
+
+            setSelectDiaVenc((prevSelectDiaVenc) =>
+                prevSelectDiaVenc.map((item) => ({ id: item.id_venc, nome: item.dia_venc }))
+            )
+
             setDataFetched(true)
         }
 
@@ -142,15 +209,19 @@ export const SaleProvider = ({ children }) => {
             fetchData()
         }
     }, [tokenEffect])
-
+    // #############################################################################
     return (
         <SaleContext.Provider value={{
             saleList, getSales, saleRegister,
+
             selectedUsuario, selectedProdutos, selectedFormPag,
             setSelectedUsuario, setSelectedProdutos, setSelectedFormPag,
-            selectUsuario, selectProdutos, selectFormPag,
-            loadingNewSale, loadingUsuario, loadingProdutos, loadingFormPag,
-            loadingListSales, setLoadingListSales
+            selectedBanco, setSelectedBanco, selectedDiaVenc, setSelectedDiaVenc,
+
+            selectUsuario, selectProdutos, selectFormPag, selectDiaVenc, selectBanco,
+
+            loadingNewSale, loadingItensSale,
+            loadingListSales, setLoadingListSales, getCEP, cepIten, setCepIten
         }}>
             {children}
         </SaleContext.Provider>
