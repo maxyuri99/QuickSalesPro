@@ -47,18 +47,17 @@ export const SaleProvider = ({ children }) => {
     const [selectedProdutos, setSelectedProdutos] = useState(0)
     const [selectedFormPag, setSelectedFormPag] = useState(0)
     const [selectedBanco, setSelectedBanco] = useState(0)
+    const [selectedDiaVenc, setSelectedDiaVenc] = useState(0)
 
     // Itens que vem da API
     const [selectUsuario, setSelectUsuario] = useState()
     const [selectProdutos, setSelectProdutos] = useState()
     const [selectFormPag, setSelectFormPag] = useState()
     const [selectBanco, setSelectBanco] = useState()
-
+    const [selectDiaVenc, setSelectDiaVenc] = useState()
 
     const [loadingNewSale, setLoadingNewSale] = useState(false)
-    const [loadingUsuario, setLoadingUsuario] = useState(false)
-    const [loadingProdutos, setLoadingProdutos] = useState(false)
-    const [loadingFormPag, setLoadingFormPag] = useState(false)
+    const [loadingItensSale, setLoadingItensSale] = useState(false)
 
     const [cepIten, setCepIten] = useState()
 
@@ -108,7 +107,7 @@ export const SaleProvider = ({ children }) => {
 
         const fetchData = async () => {
             try {
-                setLoadingUsuario(true)
+                setLoadingItensSale(true)
                 const { data } = await apiQsp.get("/v1/usuarios/all", {
                     headers: {
                         Authorization: `Bearer ${tokenEffect}`,
@@ -119,11 +118,11 @@ export const SaleProvider = ({ children }) => {
                 console.error("Erro ao buscar usuários:", error)
                 userLogout("Acesso expirado, faça login novamente")
             } finally {
-                setLoadingUsuario(false)
+                setLoadingItensSale(false)
             }
 
             try {
-                setLoadingProdutos(true)
+                setLoadingItensSale(true)
                 const { data } = await apiQsp.get("/v1/produtos/all", {
                     headers: {
                         Authorization: `Bearer ${tokenEffect}`,
@@ -134,11 +133,11 @@ export const SaleProvider = ({ children }) => {
                 console.error("Erro ao buscar produtos:", error)
                 userLogout("Acesso expirado, faça login novamente")
             } finally {
-                setLoadingProdutos(false)
+                setLoadingItensSale(false)
             }
 
             try {
-                setLoadingFormPag(true)
+                setLoadingItensSale(true)
                 const { data } = await apiQsp.get("/v1/FormPag/all", {
                     headers: {
                         Authorization: `Bearer ${tokenEffect}`,
@@ -149,8 +148,39 @@ export const SaleProvider = ({ children }) => {
                 console.error("Erro ao buscar formas de pagamento:", error)
                 userLogout("Acesso expirado, faça login novamente")
             } finally {
-                setLoadingFormPag(false)
+                setLoadingItensSale(false)
             }
+
+            try {
+                setLoadingItensSale(true)
+                const { data } = await apiQsp.get("/v1/vendas/bancos", {
+                    headers: {
+                        Authorization: `Bearer ${tokenEffect}`,
+                    },
+                })
+                setSelectBanco(data)
+            } catch (error) {
+                console.error("Erro ao buscar Bancos:", error)
+                userLogout("Acesso expirado, faça login novamente")
+            } finally {
+                setLoadingItensSale(false)
+            }
+
+            try {
+                setLoadingItensSale(true)
+                const { data } = await apiQsp.get("/v1/vendas/venc", {
+                    headers: {
+                        Authorization: `Bearer ${tokenEffect}`,
+                    },
+                })
+                setSelectDiaVenc(data)
+            } catch (error) {
+                console.error("Erro ao buscar Data Vencimento:", error)
+                userLogout("Acesso expirado, faça login novamente")
+            } finally {
+                setLoadingItensSale(false)
+            }
+
 
             setSelectUsuario((prevSelectUsuario) =>
                 prevSelectUsuario.map((item) => ({ id: item.id_usuario, ...item }))
@@ -164,6 +194,14 @@ export const SaleProvider = ({ children }) => {
                 prevSelectFormPag.map((item) => ({ id: item.id_formpag, ...item }))
             )
 
+            setSelectBanco((prevSelectBanco) =>
+                prevSelectBanco.map((item) => ({ id: item.id_banco, ...item }))
+            )
+
+            setSelectDiaVenc((prevSelectDiaVenc) =>
+                prevSelectDiaVenc.map((item) => ({ id: item.id_venc, nome: item.dia_venc }))
+            )
+
             setDataFetched(true)
         }
 
@@ -175,10 +213,14 @@ export const SaleProvider = ({ children }) => {
     return (
         <SaleContext.Provider value={{
             saleList, getSales, saleRegister,
+
             selectedUsuario, selectedProdutos, selectedFormPag,
             setSelectedUsuario, setSelectedProdutos, setSelectedFormPag,
-            selectUsuario, selectProdutos, selectFormPag,
-            loadingNewSale, loadingUsuario, loadingProdutos, loadingFormPag,
+            selectedBanco, setSelectedBanco, selectedDiaVenc, setSelectedDiaVenc,
+
+            selectUsuario, selectProdutos, selectFormPag, selectDiaVenc, selectBanco,
+
+            loadingNewSale, loadingItensSale,
             loadingListSales, setLoadingListSales, getCEP, cepIten, setCepIten
         }}>
             {children}

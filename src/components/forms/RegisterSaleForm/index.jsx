@@ -9,6 +9,7 @@ import styles from "./style.module.scss"
 import { MaskedInput } from "../InputMaskCPF"
 import { RadioSelector } from "../Radio"
 import { useEffect } from "react"
+import { toast } from "react-toastify"
 
 
 const initialValues = {
@@ -22,6 +23,8 @@ const initialValues = {
     vendedor: 0,
     plano: 0,
     formpag: 0,
+    banco: 0,
+    dia_venc: 0
 }
 
 export const RegisterSaleForm = () => {
@@ -41,9 +44,13 @@ export const RegisterSaleForm = () => {
     const [values, setValues] = useState(initialValues)
     const [selectedRadio, setSelectedRadio] = useState("cpf")
 
-    const { selectedUsuario, selectedProdutos, selectedFormPag,
+    const {
+        selectedUsuario, selectedProdutos, selectedFormPag,
+        selectedDiaVenc, selectedBanco,
         setSelectedUsuario, setSelectedProdutos, setSelectedFormPag,
-        selectUsuario, selectProdutos, selectFormPag,
+        setSelectedDiaVenc, setSelectedBanco,
+
+        selectUsuario, selectProdutos, selectFormPag, selectDiaVenc, selectBanco,
         loadingNewSale, saleRegister, getCEP, cepIten, setCepIten } = useContext(SaleContext)
 
     const optionsRadio = [
@@ -141,6 +148,32 @@ export const RegisterSaleForm = () => {
             return
         }
 
+        if (values.banco === 0) {
+            console.log("Erro: banco inválido")
+            setErrorVerify({
+                hasError: true,
+                errorField: 'banco',
+                message: 'Selecione um Banco'
+            })
+            return
+        }
+
+        if (values.dia_venc === 0) {
+            console.log("Erro: dia_venc inválido")
+            setErrorVerify({
+                hasError: true,
+                errorField: 'dia_venc',
+                message: 'Selecione um Dia de Vencimento'
+            })
+            return
+        }
+
+        if ((!formData.bairro && !cepIten.neighborhood) || (!formData.cidade && !cepIten.city) || (!formData.uf && !cepIten.state) || (!formData.endereco && !cepIten.street)) {
+            console.log("Erro: Itens endereço inválidos")
+            toast.error("Você deve preencher todos os itens do endereço")
+            return
+        }
+
         // Dados da Venda
         const vendaData = {
             id_usuario: selectedUsuario,
@@ -149,7 +182,7 @@ export const RegisterSaleForm = () => {
             plano: selectedProdutos,
             periodo: formData.periodo,
             tipo_pagmento: selectedFormPag,
-            banco: formData.banco,
+            banco: selectBanco.find(objeto => objeto.id === selectedBanco).nome,
             agencia: formData.agencia,
             conta: formData.conta,
             observacao: formData.observacao,
@@ -170,8 +203,10 @@ export const RegisterSaleForm = () => {
             bairro: formData.bairro,
             cidade: formData.cidade,
             uf: formData.uf,
+            dia_venc: selectDiaVenc.find(objeto => objeto.id === selectedDiaVenc).nome
         }
 
+        //console.log(vendaData)
         saleRegister(vendaData)
 
         reset()
@@ -187,6 +222,8 @@ export const RegisterSaleForm = () => {
         setSelectedFormPag(0)
         setSelectedProdutos(0)
         setSelectedUsuario(0)
+        setSelectedBanco(0)
+        setSelectedDiaVenc(0)
 
         window.scrollTo({
             top: 0,
@@ -371,11 +408,15 @@ export const RegisterSaleForm = () => {
                     <Input
                         label="Rua"
                         type="text"
-                        value={cepIten?.street || ""}
+                        value={cepIten?.street}
                         {...register("endereco")}
                         error={errors.endereco}
                         disabled={loadingNewSale}
                         placeholder="Rua do cliente"
+                        onChange={(e) => setCepIten(prevCepIten => ({
+                            ...prevCepIten,
+                            street: e.target.value
+                        }))}
                     />
                     <Input
                         label="Numero Residencial"
@@ -396,11 +437,15 @@ export const RegisterSaleForm = () => {
                     <Input
                         label="Bairro"
                         type="text"
-                        value={cepIten?.neighborhood || ""}
+                        value={cepIten?.neighborhood}
                         {...register("bairro")}
                         error={errors.bairro}
                         disabled={loadingNewSale}
                         placeholder="Bairro do cliente"
+                        onChange={(e) => setCepIten(prevCepIten => ({
+                            ...prevCepIten,
+                            neighborhood: e.target.value
+                        }))}
                     />
                     <Input
                         label="Cidade"
@@ -410,15 +455,23 @@ export const RegisterSaleForm = () => {
                         error={errors.cidade}
                         disabled={loadingNewSale}
                         placeholder="Cidade do cliente"
+                        onChange={(e) => setCepIten(prevCepIten => ({
+                            ...prevCepIten,
+                            city: e.target.value
+                        }))}
                     />
                     <Input
                         label="UF"
                         type="text"
-                        value={cepIten?.state || ""}
+                        value={cepIten?.state}
                         {...register("uf")}
                         error={errors.uf}
                         disabled={loadingNewSale}
                         placeholder="UF do cliente"
+                        onChange={(e) => setCepIten(prevCepIten => ({
+                            ...prevCepIten,
+                            state: e.target.value
+                        }))}
                     />
                 </div>
 
@@ -457,18 +510,23 @@ export const RegisterSaleForm = () => {
                         id={selectedFormPag}
                         onChange={setSelectedFormPag}
                         disabled={loadingNewSale}
-                        placeholder="Froma de Pagamento..."
+                        placeholder="Forma de Pagamento..."
                         label="Forma de Pagamento"
                         errorVerify={errorVerify}
                         setErrorVerify={setErrorVerify}
                     />
-                    <Input
-                        label="Banco"
-                        type="text"
-                        {...register("banco")}
-                        error={errors.banco}
+                    <Select
+                        name="banco"
+                        value={values.banco}
+                        selectChange={selectChange}
+                        options={selectBanco}
+                        id={selectedBanco}
+                        onChange={setSelectedBanco}
                         disabled={loadingNewSale}
-                        placeholder="Banco do cliente"
+                        placeholder="Banco"
+                        label="Banco"
+                        errorVerify={errorVerify}
+                        setErrorVerify={setErrorVerify}
                     />
                     <Input
                         label="Agencia"
@@ -485,6 +543,19 @@ export const RegisterSaleForm = () => {
                         error={errors.conta}
                         disabled={loadingNewSale}
                         placeholder="Conta do cliente"
+                    />
+                    <Select
+                        name="dia_venc"
+                        value={values.dia_venc}
+                        selectChange={selectChange}
+                        options={selectDiaVenc}
+                        id={selectedDiaVenc}
+                        onChange={setSelectedDiaVenc}
+                        disabled={loadingNewSale}
+                        placeholder="Dia Vencimento"
+                        label="Dia Vencimento"
+                        errorVerify={errorVerify}
+                        setErrorVerify={setErrorVerify}
                     />
                     <Input
                         label="Observações"
