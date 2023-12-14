@@ -206,7 +206,7 @@ export const RegisterSaleForm = () => {
             dia_venc: selectDiaVenc.find(objeto => objeto.id === selectedDiaVenc).nome
         }
 
-        //console.log(vendaData)
+        //console.log(vendaData)a
         saleRegister(vendaData)
 
         reset()
@@ -278,7 +278,7 @@ export const RegisterSaleForm = () => {
                         onChange={handleRadioChange}
                     />
                 </div>
-                <div className={styles.flexbox}>
+                <div className={`${styles.flexbox} ${styles.otherSections}`}>
                     {selectedRadio === "cpf" && (
                         <>
                             <MaskedInput
@@ -475,7 +475,7 @@ export const RegisterSaleForm = () => {
                     />
                 </div>
 
-                <div className={styles.flexbox}>
+                <div className={`${styles.flexbox} ${styles.otherSections}`}>
                     <Select
                         name="vendedor"
                         value={values.vendedor}
