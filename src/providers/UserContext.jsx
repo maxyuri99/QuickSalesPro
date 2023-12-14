@@ -21,8 +21,6 @@ export const UserProvider = ({ children }) => {
     const verifyToken = async () => {
         try {
             setLoading(true)
-            console.log(token)
-            console.log(userId)
             const { data } = await apiQsp.get(`/v1/usuarios/refresh/${userId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,

@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom"
+import { Navigate, Route, Routes } from "react-router-dom"
 import { Login } from "../pages/Login"
 import { Dashboard } from "../pages/DashBoard"
 import { ErrorPage } from "../pages/ErrorPage"
@@ -19,8 +19,9 @@ export const RoutesMain = () => {
 
     return (
         <Routes>
+            <Route path='/' element={<Navigate to='/quicksalespro' replace />}/>
             <Route element={<PublicRoutes />}>
-                <Route path='/quicksalespro/' element={<Login />} />
+                <Route path='/quicksalespro' element={<Login />} />
             </Route>
             <Route element={<PrivateRoutes />}>
                 <Route path='/quicksalespro/dashboard' element={<Dashboard />} />
@@ -33,14 +34,13 @@ export const RoutesMain = () => {
                         <Route path='/quicksalespro/tipo_pagamento' element={<TipoPagamento />} />
                     </>
                 ) : null}
-                {(user.cargo !== 0 ) ? (
+                {(user.cargo !== 0) ? (
                     <>
                         <Route path="/quicksalespro/nova_venda" element={<SaleProvider><NovaVenda /></SaleProvider>} />
                     </>
                 ) : null}
-
             </Route>
-            <Route path='/*' element={<Login />} />
+            <Route path='/*' element={<ErrorPage />} />
         </Routes>
     )
 }

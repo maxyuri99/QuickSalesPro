@@ -1,34 +1,33 @@
 .background {
     background: var(--background-all);
-}
-
-%flex {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .flexBox {
     display: flex;
     flex-direction: column;
-}
-
-.flexBox {
-    @extend %flex;
     align-items: center;
     gap: 2rem;
-
+  
     img {
-        max-width: 9rem;
+      max-width: 9rem;
     }
-
-
-    &>div:last-child {
-        width: clamp(324px, 50vw, 400px);
-        @extend %flex;
-        gap: 2rem;
-
-
-        padding: 42px 1.375rem;
-        border-radius: 0.25rem;
-
-        &>h1:first-child {
-            margin-top: 15px;
-            margin-bottom: 15px;
-        }
+  }
+  
+  .loginContainer {
+    width: clamp(324px, 50vw, 400px);
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 42px 1.375rem;
+    border-radius: 0.25rem;
+  
+    h1:first-child {
+      margin-top: 15px;
+      margin-bottom: 15px;
     }
-}
+  }
+  
