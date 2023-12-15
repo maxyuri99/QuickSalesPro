@@ -29,7 +29,7 @@ export const LoginForm = () => {
 
     return (
         <form onSubmit={handleSubmit(submit)} >
-            <div className="flexgap2">
+            <div className={styles.flexbox}>
                 <Input label="Login:" type="text" {...register("login")} error={errors.login} disabled={loading} />
                 <InputPassword label="Senha:" {...register("senha")} error={errors.senha} disabled={loading} />
                 <div className="flexgap2">

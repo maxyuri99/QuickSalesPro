@@ -12,33 +12,6 @@ export const SaleContext = createContext({})
 export const SaleProvider = ({ children }) => {
     const { userLogout, navigateUser } = useContext(UserContext)
 
-    // ###### pagina de Controle de Vendas ######
-    const [saleList, setSaleList] = useState([])
-    const [loadingListSales, setLoadingListSales] = useState(false)
-
-    const token = localStorage.getItem("@TOKENACESS")
-
-    const getSales = async () => {
-        try {
-            setLoadingListSales(true)
-            const { data } = await apiQsp.get('/v1/vendas/all', {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                }
-            })
-
-            setSaleList(data)
-
-        } catch (error) {
-            console.log(error)
-        } finally {
-            setLoadingListSales(false)
-        }
-    }
-
-    // ########################################################
-
-
     // ####### Pagina de nova venda ##########################
     const [dataFetched, setDataFetched] = useState(false)
 
@@ -58,6 +31,7 @@ export const SaleProvider = ({ children }) => {
 
     const [loadingNewSale, setLoadingNewSale] = useState(false)
     const [loadingItensSale, setLoadingItensSale] = useState(false)
+    const [loadingCEPSale, setLoadingCEPSales] = useState(false)
 
     const [cepIten, setCepIten] = useState()
 
@@ -87,7 +61,7 @@ export const SaleProvider = ({ children }) => {
 
     const getCEP = async (cep) => {
         try {
-            setLoadingListSales(true)
+            setLoadingCEPSales(true)
             const { data } = await apiCEP.get(`/api/cep/v1/${cep}`)
 
             setCepIten(data)
@@ -97,7 +71,7 @@ export const SaleProvider = ({ children }) => {
             toast.error("CEP não encontrado")
             //res.status(500).json({ error: 'Internal Server Error' })
         } finally {
-            setLoadingListSales(false)
+            setLoadingCEPSales(false)
         }
     }
 
@@ -209,10 +183,17 @@ export const SaleProvider = ({ children }) => {
             fetchData()
         }
     }, [tokenEffect])
-    // #############################################################################
+
+    function selectChange(name, valueIten) {
+        setValues({
+            ...values,
+            [name]: valueIten
+        })
+    }
+    
     return (
         <SaleContext.Provider value={{
-            saleList, getSales, saleRegister,
+            saleRegister, selectChange,
 
             selectedUsuario, selectedProdutos, selectedFormPag,
             setSelectedUsuario, setSelectedProdutos, setSelectedFormPag,
@@ -220,8 +201,8 @@ export const SaleProvider = ({ children }) => {
 
             selectUsuario, selectProdutos, selectFormPag, selectDiaVenc, selectBanco,
 
-            loadingNewSale, loadingItensSale,
-            loadingListSales, setLoadingListSales, getCEP, cepIten, setCepIten
+            loadingNewSale, loadingItensSale, loadingCEPSale,
+            getCEP, cepIten, setCepIten
         }}>
             {children}
         </SaleContext.Provider>

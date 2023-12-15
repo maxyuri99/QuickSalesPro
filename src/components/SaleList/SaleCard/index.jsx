@@ -1,29 +1,18 @@
-import { MdEdit, MdDelete, MdVisibility } from "react-icons/md"
 import { Link } from "react-router-dom"
+import styles from "./style.module.scss"
 
 export const SaleCard = ({ sale }) => {
     return (
-        <li>
+        <li className={styles.saleCard} >
             <div>
-                <span className="paragraph grey1">
-                    <strong>Id Venda: {sale.id_venda}</strong>
-                    Cliente: {sale.nome_cliente}
-                    Nome Usuario: {sale.nome_usuario}
-                    Plano: {sale.nome_produto}
-                    Etapa: {sale.nome_etapa}
-                    Banco: {sale.banco}
-                    Agencia: {sale.agencia}
-                    Conta: {sale.conta}
-                    Data: {sale.dt_ger}
+                <span className="paragraph grey1">{sale.cpf}
                 </span>
-            </div>
-            <div>
-                <button title="Editar" aria-label="edit" className="paragraph grey2">
-                    <MdEdit />
-                </button>
-                <button title="Visualizar nota" aria-label="view" className="paragraph grey2">
-                    <MdVisibility />
-                </button>
+                <span className="paragraph grey1">{sale.nome_cliente}
+                </span>
+                <span className="paragraph grey1">{sale.nome_usuario}</span>
+                <span className="paragraph grey1">{sale.nome_produto}</span>
+                <span className="paragraph grey1">{sale.nome_etapa}</span>
+                <span className="paragraph grey1">{new Date(sale.dt_ger).toLocaleDateString()}</span>
             </div>
         </li>
     )

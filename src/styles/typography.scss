@@ -76,19 +76,6 @@
         font-size: clamp(18px, 5vw, 22px);
     }
 }
-
-.flexgap2{
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-}
-
-.flexgap1{
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-}
-
 .margininput{
     padding:  15px 60px  0 60px;
 }

@@ -7,8 +7,16 @@
     background-color: var(--background-all);
     /* Substitua 'sua-cor' pela cor desejada */
     overflow: auto;
-    /* Adicione isso para permitir a rolagem */
 
+    /* Adicione isso para permitir a rolagem */
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--grey-1);
+        border-radius: 10px;
+    }
 }
 
 .overlay {

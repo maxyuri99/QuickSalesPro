@@ -1,15 +1,18 @@
-
-.flexBox {
-
+.flexbox {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    
-    & > input {
-        height: 3rem;
-        padding: 0 1.01519rem;
-        border-radius: 0.25rem;
-        background: var(--grey-2);
-    }
+}
 
+.inputiten {
+    border-color: none;
+    border-radius: 50px;
+    background-color: var(--grey-2);
+    padding: 15px 19px;
+
+    color: var(--grey-0);
+
+    :focus {
+        border-color: var(--grey-0);
+    }
 }

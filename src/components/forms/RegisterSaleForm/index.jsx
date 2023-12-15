@@ -50,6 +50,8 @@ export const RegisterSaleForm = () => {
         setSelectedUsuario, setSelectedProdutos, setSelectedFormPag,
         setSelectedDiaVenc, setSelectedBanco,
 
+        selectChange,
+
         selectUsuario, selectProdutos, selectFormPag, selectDiaVenc, selectBanco,
         loadingNewSale, saleRegister, getCEP, cepIten, setCepIten } = useContext(SaleContext)
 
@@ -244,13 +246,6 @@ export const RegisterSaleForm = () => {
         setValues({
             ...values,
             [event.target.name]: event.target.value
-        })
-    }
-
-    function selectChange(name, valueIten) {
-        setValues({
-            ...values,
-            [name]: valueIten
         })
     }
 
