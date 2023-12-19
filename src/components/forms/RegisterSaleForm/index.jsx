@@ -11,22 +11,6 @@ import { RadioSelector } from "../Radio"
 import { useEffect } from "react"
 import { toast } from "react-toastify"
 
-
-const initialValues = {
-    cpf: '',
-    cnpj: '',
-    cpf_socio: '',
-    telefone_1: '',
-    telefone_2: '',
-    telefone_3: '',
-    cep: '',
-    vendedor: 0,
-    plano: 0,
-    formpag: 0,
-    banco: 0,
-    dia_venc: 0
-}
-
 export const RegisterSaleForm = () => {
     const {
         register,
@@ -41,16 +25,15 @@ export const RegisterSaleForm = () => {
         errorField: null,
         message: ''
     })
-    const [values, setValues] = useState(initialValues)
-    const [selectedRadio, setSelectedRadio] = useState("cpf")
 
     const {
         selectedUsuario, selectedProdutos, selectedFormPag,
         selectedDiaVenc, selectedBanco,
         setSelectedUsuario, setSelectedProdutos, setSelectedFormPag,
-        setSelectedDiaVenc, setSelectedBanco,
+        setSelectedDiaVenc, setSelectedBanco, values, setValues, initialValues,
 
-        selectChange,
+        selectChange, selectedRadio, setSelectedRadio,
+        handleChange,
 
         selectUsuario, selectProdutos, selectFormPag, selectDiaVenc, selectBanco,
         loadingNewSale, saleRegister, getCEP, cepIten, setCepIten } = useContext(SaleContext)
@@ -179,7 +162,7 @@ export const RegisterSaleForm = () => {
         // Dados da Venda
         const vendaData = {
             id_usuario: selectedUsuario,
-            etapa: 38,
+            etapa: 13, //Etapa Inicial é BKO ID 13 no banco
             ord_vendas: "",
             plano: selectedProdutos,
             periodo: formData.periodo,
@@ -211,6 +194,11 @@ export const RegisterSaleForm = () => {
         //console.log(vendaData)a
         saleRegister(vendaData)
 
+        document.documentElement.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        })
+    
         reset()
 
         setValues(initialValues)
@@ -227,11 +215,6 @@ export const RegisterSaleForm = () => {
         setSelectedBanco(0)
         setSelectedDiaVenc(0)
 
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth',
-        })
-
         setCepIten({})
 
     }
@@ -241,13 +224,6 @@ export const RegisterSaleForm = () => {
             getCEP(values.cep)
         }
     }, [values.cep])
-
-    function handleChange(event) {
-        setValues({
-            ...values,
-            [event.target.name]: event.target.value
-        })
-    }
 
     const handleRadioChange = (value) => {
         setSelectedRadio(value);
@@ -277,6 +253,7 @@ export const RegisterSaleForm = () => {
                     {selectedRadio === "cpf" && (
                         <>
                             <MaskedInput
+                                type="number"
                                 label="CPF"
                                 name="cpf"
                                 mask="999.999.999-99"
@@ -308,6 +285,7 @@ export const RegisterSaleForm = () => {
                     {selectedRadio === "cnpj" && (
                         <>
                             <MaskedInput
+                                type="number"
                                 label="CNPJ"
                                 name="cnpj"
                                 mask="99.999.999/9999-99"
@@ -320,6 +298,7 @@ export const RegisterSaleForm = () => {
                             />
 
                             <MaskedInput
+                                type="number"
                                 label="CPF Sócio"
                                 name="cpf_socio"
                                 mask="999.999.999-99"
@@ -357,6 +336,7 @@ export const RegisterSaleForm = () => {
                         placeholder="Email do cliente"
                     />
                     <MaskedInput
+                        type="number"
                         label="Telefone Principal"
                         name="telefone_1"
                         mask="(99)9 9999-9999"
@@ -368,6 +348,7 @@ export const RegisterSaleForm = () => {
                         setErrorVerify={setErrorVerify}
                     />
                     <MaskedInput
+                        type="number"
                         label="Telefone Residencial"
                         name="telefone_2"
                         mask="(99) 9999-9999"
@@ -379,6 +360,7 @@ export const RegisterSaleForm = () => {
                         setErrorVerify={setErrorVerify}
                     />
                     <MaskedInput
+                        type="number"
                         label="Telefone Reserva"
                         name="telefone_3"
                         mask="(99)9 9999-9999"
@@ -390,6 +372,7 @@ export const RegisterSaleForm = () => {
                         setErrorVerify={setErrorVerify}
                     />
                     <MaskedInput
+                        type="number"
                         label="CEP"
                         name="cep"
                         mask="99999-999"
@@ -415,7 +398,7 @@ export const RegisterSaleForm = () => {
                     />
                     <Input
                         label="Numero Residencial"
-                        type="text"
+                        type="number"
                         {...register("numero_end")}
                         error={errors.numero_end}
                         disabled={loadingNewSale}
@@ -445,7 +428,7 @@ export const RegisterSaleForm = () => {
                     <Input
                         label="Cidade"
                         type="text"
-                        value={cepIten?.city || ""}
+                        value={cepIten?.city}
                         {...register("cidade")}
                         error={errors.cidade}
                         disabled={loadingNewSale}
@@ -525,7 +508,7 @@ export const RegisterSaleForm = () => {
                     />
                     <Input
                         label="Agencia"
-                        type="text"
+                        type="number"
                         {...register("agencia")}
                         error={errors.agencia}
                         disabled={loadingNewSale}
@@ -533,7 +516,7 @@ export const RegisterSaleForm = () => {
                     />
                     <Input
                         label="Conta"
-                        type="text"
+                        type="number"
                         {...register("conta")}
                         error={errors.conta}
                         disabled={loadingNewSale}

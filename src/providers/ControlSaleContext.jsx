@@ -7,7 +7,7 @@ export const ControlSaleContext = createContext({})
 
 const initialValues = {
     cpf: '',
-    plano: 0
+    etapa: 0
 }
 
 export const ControlSaleProvider = ({ children }) => {
@@ -18,8 +18,11 @@ export const ControlSaleProvider = ({ children }) => {
     const [loadingListSales, setLoadingListSales] = useState(false)
 
     const [dataFetched, setDataFetched] = useState(false)
-    const [selectedPlanos, setSelectedPlanos] = useState(0)
-    const [selectPlanos, setSelectPlanos] = useState(0)
+    const [selectedEtapas, setSelectedEtapas] = useState(0)
+    const [selectEtapas, setSelectEtapas] = useState(0)
+
+    //Modal
+    const [currentSale, setCurrentSale] = useState(null)
 
     const token = localStorage.getItem("@TOKENACESS")
 
@@ -41,9 +44,9 @@ export const ControlSaleProvider = ({ children }) => {
             cpf_cnpj,
             dataInicial,
             dataFinal,
-            plano:
-                selectedPlanos !== 0
-                    ? selectPlanos.find((objeto) => objeto.id_produto === selectedPlanos)?.nome
+            etapa:
+                selectedEtapas !== 0
+                    ? selectEtapas.find((objeto) => objeto.id_etapa === selectedEtapas)?.nome
                     : "Todos",
         }
 
@@ -66,12 +69,13 @@ export const ControlSaleProvider = ({ children }) => {
                 (cpfSemCaEspeciais.includes(filtro.cpf_cnpj) ||
                     cnpjSemCaEspeciais.includes(filtro.cpf_cnpj))
 
-            const planoValido =
-                filtro.plano === "Todos" ||
-                (sale.nome_produto && sale.nome_produto.toLowerCase() === filtro.plano.toLowerCase())
+            const etapaValido =
+                filtro.etapa === "Todos" ||
+                (sale.nome_etapa && sale.nome_etapa.toLowerCase() === filtro.etapa.toLowerCase())
 
 
-            return nomeValido && dataValida && cpfCnpjValido && planoValido
+
+            return nomeValido && dataValida && cpfCnpjValido && etapaValido
         })
 
         // Ordenar a lista filtrada pela data (dt_ger) de forma decrescente
@@ -143,22 +147,22 @@ export const ControlSaleProvider = ({ children }) => {
 
             try {
 
-                const { data } = await apiQsp.get("/v1/produtos/all", {
+                const { data } = await apiQsp.get("/v1/etapas/all", {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 })
-                setSelectPlanos(data)
+                setSelectEtapas(data)
             } catch (error) {
-                console.error("Erro ao buscar produtos:", error)
+                console.error("Erro ao buscar etapas:", error)
                 userLogout("Acesso expirado, faça login novamente")
             } finally {
 
             }
 
 
-            setSelectPlanos((prevSelectPlanos) =>
-                prevSelectPlanos.map((item) => ({ id: item.id_produto, ...item }))
+            setSelectEtapas((prevSelectPlanos) =>
+                prevSelectPlanos.map((item) => ({ id: item.id_etapa, ...item }))
             )
 
             setDataFetched(true)
@@ -176,14 +180,18 @@ export const ControlSaleProvider = ({ children }) => {
         })
     }
 
+    const closeModal = () => {
+        setCurrentSale(null)
+    }
+
     return (
         <ControlSaleContext.Provider value={{
             saleList, getSales, selectChange,
             errorVerify, setErrorVerify,
 
-            selectedPlanos,
-            setSelectedPlanos,
-            selectPlanos,
+            selectedEtapas,
+            setSelectedEtapas,
+            selectEtapas,
 
             nome, setNome,
             cpf_cnpj, setCpf_cpnj,
@@ -191,7 +199,9 @@ export const ControlSaleProvider = ({ children }) => {
             dataFinal, setDataFinal,
 
             handleFilterClick,
-            saleListFilter
+            saleListFilter,
+
+            closeModal, currentSale, setCurrentSale,
         }}>
             {children}
         </ControlSaleContext.Provider>

@@ -7,10 +7,11 @@ import "react-toastify/dist/ReactToastify.min.css"
 
 function App() {
   const { loading } = useContext(UserContext);
+
   return (
-     <>
-        {loading ? <p>Carregando...</p> : <RoutesMain />}
-        <ToastContainer position="bottom-right" autoClose={2 * 1000} />
+    <>
+      {loading ? <p>Carregando...</p> : <RoutesMain />}
+      <ToastContainer position="bottom-right" autoClose={2 * 1000} />
     </>
   )
 }

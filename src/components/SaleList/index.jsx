@@ -6,8 +6,8 @@ import { Input } from "../forms/Input"
 import { Select } from "../forms/Select"
 
 export const SaleListComp = () => {
-    const { saleList, getSales, loadingListSales,
-        selectPlanos, selectedPlanos, setSelectedPlanos, selectChange,
+    const { getSales, loadingListSales,
+        selectEtapas, selectedEtapas, setSelectedEtapas, selectChange,
         errorVerify, setErrorVerify,
 
         nome, setNome,
@@ -33,7 +33,7 @@ export const SaleListComp = () => {
     return (
         <div className={styles.saleListDiv}>
             <div >
-                <h1 className="title grey0">Lista de Vendas</h1>
+                <h1 className="title grey0">Controle de Vendas</h1>
                 <button onClick={handleUpdateList} className="btn solid primary small">Atualizar Lista</button>
             </div>
             <div className={styles.filterDivAll}>
@@ -54,13 +54,13 @@ export const SaleListComp = () => {
                             onChange={(e) => setCpf_cpnj(e.target.value)}
                         />
                         <Select
-                            name="plano"
+                            name="etapa"
                             selectChange={selectChange}
-                            options={selectPlanos}
-                            id={selectedPlanos}
-                            onChange={setSelectedPlanos}
+                            options={selectEtapas}
+                            id={selectedEtapas}
+                            onChange={setSelectedEtapas}
                             placeholder="Todos"
-                            label="Plano"
+                            label="Etapa"
                             errorVerify={errorVerify}
                             setErrorVerify={setErrorVerify}
                         />

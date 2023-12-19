@@ -1,9 +1,15 @@
-import { Link } from "react-router-dom"
+import { useContext } from "react"
+import { ControlSaleContext } from "../../../providers/ControlSaleContext"
 import styles from "./style.module.scss"
 
 export const SaleCard = ({ sale }) => {
+    const { setCurrentSale, currentSale } = useContext(ControlSaleContext)
+
+    const saleIten = (iten)=>{
+        setCurrentSale(iten)
+    }
     return (
-        <li className={styles.saleCard} >
+        <li className={styles.saleCard} onClick={() => { saleIten({...sale})}} >
             <div>
                 <span className="paragraph grey1">{sale.cpf}
                 </span>
