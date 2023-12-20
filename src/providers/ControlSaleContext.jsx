@@ -1,7 +1,9 @@
-import { useEffect } from "react"
+import { useContext, useEffect } from "react"
 import { useState } from "react"
 import { createContext } from "react"
 import { apiQsp } from "../services/api"
+import { UserContext } from "./UserContext"
+import { toast } from "react-toastify"
 
 export const ControlSaleContext = createContext({})
 
@@ -11,6 +13,7 @@ const initialValues = {
 }
 
 export const ControlSaleProvider = ({ children }) => {
+    const { userLogout } = useContext(UserContext)
     const [values, setValues] = useState(initialValues)
 
     const [saleList, setSaleList] = useState([])
@@ -20,6 +23,24 @@ export const ControlSaleProvider = ({ children }) => {
     const [dataFetched, setDataFetched] = useState(false)
     const [selectedEtapas, setSelectedEtapas] = useState(0)
     const [selectEtapas, setSelectEtapas] = useState(0)
+
+    const [selectedEtapasFilter, setSelectedEtapasFilter] = useState(0)
+
+    // Item Selecionado
+    const [selectedUsuario, setSelectedUsuario] = useState(0)
+    const [selectedProdutos, setSelectedProdutos] = useState(0)
+    const [selectedFormPag, setSelectedFormPag] = useState(0)
+    const [selectedBanco, setSelectedBanco] = useState(0)
+    const [selectedDiaVenc, setSelectedDiaVenc] = useState(0)
+
+    // Itens que vem da API
+    const [selectUsuario, setSelectUsuario] = useState()
+    const [selectProdutos, setSelectProdutos] = useState()
+    const [selectFormPag, setSelectFormPag] = useState()
+    const [selectBanco, setSelectBanco] = useState()
+    const [selectDiaVenc, setSelectDiaVenc] = useState()
+
+    const [itensPatch, setItensPatch] = useState(null)
 
     //Modal
     const [currentSale, setCurrentSale] = useState(null)
@@ -45,8 +66,8 @@ export const ControlSaleProvider = ({ children }) => {
             dataInicial,
             dataFinal,
             etapa:
-                selectedEtapas !== 0
-                    ? selectEtapas.find((objeto) => objeto.id_etapa === selectedEtapas)?.nome
+                selectedEtapasFilter !== 0
+                    ? selectEtapas.find((objeto) => objeto.id_etapa === selectedEtapasFilter)?.nome
                     : "Todos",
         }
 
@@ -87,19 +108,16 @@ export const ControlSaleProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        // Obtém a data atual
         const dataAtual = new Date()
 
-        // Configura dataInicial para o primeiro dia do mês atual
         const primeiroDiaMesAtual = new Date(dataAtual.getFullYear(), dataAtual.getMonth(), 1)
         const formattedPrimeiroDia = primeiroDiaMesAtual.toISOString().split("T")[0]
         setDataInicial(formattedPrimeiroDia)
 
-        // Configura dataFinal para o último dia do mês atual
         const ultimoDiaMesAtual = new Date(dataAtual.getFullYear(), dataAtual.getMonth() + 1, 0)
         const formattedUltimoDia = ultimoDiaMesAtual.toISOString().split("T")[0]
         setDataFinal(formattedUltimoDia)
-    }, []) // Executa apenas uma vez ao montar o componente
+    }, [])
 
     const getSales = async () => {
         try {
@@ -116,6 +134,26 @@ export const ControlSaleProvider = ({ children }) => {
             console.log(error)
         } finally {
             setLoadingListSales(false)
+        }
+    }
+
+    const patchSale = async (id_venda, updatedData) => {
+        try {
+
+            const response = await apiQsp.patch(`/v1/vendas/edit/${id_venda}`, updatedData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+
+            console.log('Venda atualizada com sucesso:', response.data)
+            toast.success("Dados atualizados com sucesso!")
+            handleUpdateList()
+
+        } catch (error) {
+            console.error('Erro ao atualizar a venda:', error)
+        } finally {
+
         }
     }
 
@@ -155,11 +193,106 @@ export const ControlSaleProvider = ({ children }) => {
                 setSelectEtapas(data)
             } catch (error) {
                 console.error("Erro ao buscar etapas:", error)
-                userLogout("Acesso expirado, faça login novamente")
+                return userLogout("Acesso expirado, faça login novamente")
             } finally {
 
             }
 
+            try {
+
+                const { data } = await apiQsp.get("/v1/usuarios/all", {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+                setSelectUsuario(data)
+            } catch (error) {
+                console.error("Erro ao buscar usuários:", error)
+                return userLogout("Acesso expirado, faça login novamente")
+            } finally {
+
+            }
+
+            try {
+
+                const { data } = await apiQsp.get("/v1/produtos/all", {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+                setSelectProdutos(data)
+            } catch (error) {
+                console.error("Erro ao buscar produtos:", error)
+                return userLogout("Acesso expirado, faça login novamente")
+            } finally {
+
+            }
+
+            try {
+
+                const { data } = await apiQsp.get("/v1/FormPag/all", {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+                setSelectFormPag(data)
+            } catch (error) {
+                console.error("Erro ao buscar formas de pagamento:", error)
+                return userLogout("Acesso expirado, faça login novamente")
+            } finally {
+
+            }
+
+            try {
+
+                const { data } = await apiQsp.get("/v1/vendas/bancos", {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+                setSelectBanco(data)
+            } catch (error) {
+                console.error("Erro ao buscar Bancos:", error)
+                return userLogout("Acesso expirado, faça login novamente")
+            } finally {
+
+            }
+
+            try {
+
+                const { data } = await apiQsp.get("/v1/vendas/venc", {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+                setSelectDiaVenc(data)
+            } catch (error) {
+                console.error("Erro ao buscar Data Vencimento:", error)
+                return userLogout("Acesso expirado, faça login novamente")
+            } finally {
+
+            }
+
+
+            setSelectUsuario((prevSelectUsuario) =>
+                prevSelectUsuario.map((item) => ({ id: item.id_usuario, ...item }))
+            )
+
+            setSelectProdutos((prevSelectProdutos) =>
+                prevSelectProdutos.map((item) => ({ id: item.id_produto, ...item }))
+            )
+
+            setSelectFormPag((prevSelectFormPag) =>
+                prevSelectFormPag.map((item) => ({ id: item.id_formpag, ...item }))
+            )
+
+            setSelectBanco((prevSelectBanco) =>
+                prevSelectBanco.map((item) => ({ id: item.id_banco, ...item }))
+            )
+
+            setSelectDiaVenc((prevSelectDiaVenc) =>
+                prevSelectDiaVenc.map((item) => ({ id: item.id_venc, nome: item.dia_venc }))
+            )
 
             setSelectEtapas((prevSelectPlanos) =>
                 prevSelectPlanos.map((item) => ({ id: item.id_etapa, ...item }))
@@ -171,7 +304,7 @@ export const ControlSaleProvider = ({ children }) => {
         if (!dataFetched) {
             fetchData()
         }
-    }, [token])
+    }, [])
 
     function selectChange(name, valueIten) {
         setValues({
@@ -182,6 +315,18 @@ export const ControlSaleProvider = ({ children }) => {
 
     const closeModal = () => {
         setCurrentSale(null)
+        setItensPatch(null)
+    }
+
+    const handleUpdateList = async () => {
+        try {
+            await getSales()
+
+            setSelectedEtapasFilter(0)
+            handleFilterClick()
+        } catch (error) {
+            console.error(error)
+        }
     }
 
     return (
@@ -202,6 +347,18 @@ export const ControlSaleProvider = ({ children }) => {
             saleListFilter,
 
             closeModal, currentSale, setCurrentSale,
+
+            selectUsuario, selectProdutos, selectFormPag, selectDiaVenc, selectBanco,
+
+            selectedUsuario, selectedProdutos, selectedFormPag,
+            setSelectedUsuario, setSelectedProdutos, setSelectedFormPag,
+            selectedBanco, setSelectedBanco, selectedDiaVenc, setSelectedDiaVenc,
+
+            selectedEtapasFilter, setSelectedEtapasFilter,
+
+            itensPatch, setItensPatch,
+            handleUpdateList, patchSale,
+            loadingListSales
         }}>
             {children}
         </ControlSaleContext.Provider>

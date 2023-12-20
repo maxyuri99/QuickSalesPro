@@ -11,7 +11,7 @@ function App() {
   return (
     <>
       {loading ? <p>Carregando...</p> : <RoutesMain />}
-      <ToastContainer position="bottom-right" autoClose={2 * 1000} />
+      <ToastContainer position="bottom-right" autoClose={2 * 1000}  style={{ zIndex: 999999 }}/>
     </>
   )
 }

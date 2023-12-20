@@ -24,13 +24,34 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: space-between;
+
         gap: 20px;
+
+        .formContent {
+            width: 100%;
+            max-height: 95%;
+
+            margin: 0 1rem;
+            overflow: auto;
+
+            button {
+                margin-bottom: 1.5rem;
+            }
+
+            &::-webkit-scrollbar {
+                width: 6px;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background-color: var(--grey-1);
+                border-radius: 10px;
+            }
+        }
 
         .closeButton {
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: 15px;
+            right: 15px;
             color: var(--color-focus);
         }
 
@@ -38,21 +59,19 @@
             color: var(--color-red);
         }
 
-        .divContBox {
-            width: 100%;
-            overflow: auto;
-
-            button {
-                margin-bottom: 1.5rem;
-            }
-        }
-
         .contentBox {
             width: 100%;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 16px;
             margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+
+            background: var(--background-all);
+
+            border: 1px solid var(--grey-3);
+            border-radius: 10px;
+            padding: 15px;
         }
     }
 }

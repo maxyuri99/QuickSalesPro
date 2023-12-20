@@ -6,9 +6,11 @@ import { Input } from "../forms/Input"
 import { Select } from "../forms/Select"
 
 export const SaleListComp = () => {
-    const { getSales, loadingListSales,
-        selectEtapas, selectedEtapas, setSelectedEtapas, selectChange,
+    const { 
+        selectEtapas, selectedEtapasFilter, setSelectedEtapasFilter, selectChange,
         errorVerify, setErrorVerify,
+
+        
 
         nome, setNome,
         cpf_cnpj, setCpf_cpnj,
@@ -16,19 +18,12 @@ export const SaleListComp = () => {
         dataFinal, setDataFinal,
 
         handleFilterClick,
-        saleListFilter
+        saleListFilter,
+        handleUpdateList,
 
     } = useContext(ControlSaleContext)
 
-    const handleUpdateList = async () => {
-        try {
-            await getSales()
-
-            handleFilterClick()
-        } catch (error) {
-            console.error(error)
-        }
-    }
+    
 
     return (
         <div className={styles.saleListDiv}>
@@ -57,8 +52,8 @@ export const SaleListComp = () => {
                             name="etapa"
                             selectChange={selectChange}
                             options={selectEtapas}
-                            id={selectedEtapas}
-                            onChange={setSelectedEtapas}
+                            id={selectedEtapasFilter}
+                            onChange={setSelectedEtapasFilter}
                             placeholder="Todos"
                             label="Etapa"
                             errorVerify={errorVerify}
@@ -97,11 +92,6 @@ export const SaleListComp = () => {
                         <span className="paragraph grey1">Etapa: </span>
                         <span className="paragraph grey1">Data Geração:</span>
                     </div>
-                    {loadingListSales && (
-                        <div className={styles.overlay}>
-                            <div className={styles.spinner}></div>
-                        </div>
-                    )}
                     <div className={styles.divSaleCard}>
                         {saleListFilter.map(sale => (
                             <SaleCard key={sale.id_venda} sale={sale} />

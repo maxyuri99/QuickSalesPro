@@ -6,13 +6,18 @@ import styles from "./style.module.scss"
 import { SaleEditModal } from "../../components/modal/SaleEditModal"
 
 export const ControleVendas = () => {
-    const { currentSale } = useContext(ControlSaleContext)
+    const { currentSale, loadingListSales } = useContext(ControlSaleContext)
     return (
         <>
             {currentSale ? (
-                 <SaleEditModal />
+                <SaleEditModal />
             ) : null}
             <DefaultTemplate>
+                {loadingListSales && (
+                    <div className={styles.overlaySpinner}>
+                        <div className={styles.spinner}></div>
+                    </div>
+                )}
                 <main className={styles.background}>
                     <div className={styles.content}>
                         <SaleListComp />

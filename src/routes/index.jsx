@@ -13,21 +13,24 @@ import { PublicRoutes } from "./PublicRoutes"
 import { SaleProvider } from "../providers/SaleContext"
 import { useContext } from "react"
 import { UserContext } from "../providers/UserContext"
+import { ControlSaleProvider } from '../providers/ControlSaleContext'
+
 
 export const RoutesMain = () => {
     const { user } = useContext(UserContext)
 
     return (
         <Routes>
-            <Route path='/' element={<Navigate to='/quicksalespro' replace />}/>
+            <Route path='/' element={<Navigate to='/quicksalespro' replace />} />
             <Route element={<PublicRoutes />}>
                 <Route path='/quicksalespro' element={<Login />} />
             </Route>
             <Route element={<PrivateRoutes />}>
+
                 <Route path='/quicksalespro/dashboard' element={<Dashboard />} />
                 {(user.cargo === 1 || user.cargo === 4 || user.cargo === 5) ? (
                     <>
-                        <Route path="/quicksalespro/controle_vendas" element={<SaleProvider><ControleVendas /></SaleProvider>} />
+                        <Route path="/quicksalespro/controle_vendas" element={<ControlSaleProvider> <ControleVendas /> </ControlSaleProvider>} />
                         <Route path='/quicksalespro/etapas' element={<Etapas />} />
                         <Route path='/quicksalespro/funcionarios' element={<Funcionarios />} />
                         <Route path='/quicksalespro/produtos' element={<Produtos />} />
@@ -39,6 +42,7 @@ export const RoutesMain = () => {
                         <Route path="/quicksalespro/nova_venda" element={<SaleProvider><NovaVenda /></SaleProvider>} />
                     </>
                 ) : null}
+
             </Route>
             <Route path='/*' element={<ErrorPage />} />
         </Routes>
