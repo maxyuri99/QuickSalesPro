@@ -27,8 +27,12 @@
         color: var(--grey-5);
     }
 
-    &.small {
-        font-size: 13px;
+    &.big {
+        font-size: clamp(23px, 5vw, 26px);
+    }
+
+    &.small{
+        font-size: clamp(10px, 5vw, 15px);
     }
 
     &.center{
@@ -78,6 +82,10 @@
 }
 .margininput{
     padding:  15px 60px  0 60px;
+}
+
+.click{
+    cursor: pointer;
 }
 
 .input {

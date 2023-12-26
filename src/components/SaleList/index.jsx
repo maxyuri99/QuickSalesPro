@@ -23,8 +23,6 @@ export const SaleListComp = () => {
 
     } = useContext(ControlSaleContext)
 
-    
-
     return (
         <div className={styles.saleListDiv}>
             <div >

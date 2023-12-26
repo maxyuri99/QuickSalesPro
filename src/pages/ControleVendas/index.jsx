@@ -18,11 +18,7 @@ export const ControleVendas = () => {
                         <div className={styles.spinner}></div>
                     </div>
                 )}
-                <main className={styles.background}>
-                    <div className={styles.content}>
-                        <SaleListComp />
-                    </div>
-                </main>
+                <SaleListComp />
             </DefaultTemplate>
         </>
     )

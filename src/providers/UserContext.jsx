@@ -17,6 +17,9 @@ export const UserProvider = ({ children }) => {
     const token = localStorage.getItem("@TOKENACESS")
     const userId = localStorage.getItem("@USERID")
 
+    // Item que verifica o Header se está expandido ou não
+    const [isHeaderExpanded, setHeaderExpanded] = useState(true);
+
     //############ Verificação de token e autenticação #############
     const verifyToken = async () => {
         try {
@@ -103,7 +106,7 @@ export const UserProvider = ({ children }) => {
     // ############################################################
 
     return (
-        <UserContext.Provider value={{ loading, userLogout, user, userLogin, verifyToken, navigateUser }}>
+        <UserContext.Provider value={{ loading, userLogout, user, userLogin, verifyToken, navigateUser, isHeaderExpanded, setHeaderExpanded, }}>
             {children}
         </UserContext.Provider>
     )

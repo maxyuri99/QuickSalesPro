@@ -7,7 +7,7 @@ import styles from "./style.module.scss"
 export const NovaVenda = () => {
     const { loadingCEPSale } = useContext(SaleContext)
     return (
-        <main className={styles.background}>
+        <div className={styles.background}>
             <DefaultTemplate>
                 {loadingCEPSale && (
                     <div className={styles.overlay}>
@@ -19,6 +19,6 @@ export const NovaVenda = () => {
                     <RegisterSaleForm />
                 </div>
             </DefaultTemplate>
-        </main>
+        </div>
     )
 }
