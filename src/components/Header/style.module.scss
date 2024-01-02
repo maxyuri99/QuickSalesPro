@@ -1,5 +1,3 @@
-$isHeaderExpanded: false;
-
 .headerUser {
   width: 100%;
   height: 50px;
@@ -40,7 +38,7 @@ $isHeaderExpanded: false;
     width: 100%;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 16px;
+    gap: 12px;
     justify-content: center;
   }
 
@@ -48,7 +46,9 @@ $isHeaderExpanded: false;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 15px;
+
+    padding: 2px;
+    gap: 13px;
   }
   
   li:hover {
@@ -59,12 +59,11 @@ $isHeaderExpanded: false;
 
   @media (min-width: 769px) {
     position: relative;
-    max-width: 17.5rem;
-    min-width: 14.8125rem;
+    max-width: 280px;
+    min-width: 230px;
     min-height: 100vh;
     max-height: calc(100vh - 705px);
     border-radius: 8px;
-    width: if($isHeaderExpanded, 280px, 50px);
 
     ul {
       display: flex;

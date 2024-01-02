@@ -21,7 +21,7 @@ export const Header = ({ children }) => {
             <div className="ajustPage">
                 <div className={styles.headerPages}>
                     <div className={styles.divQuick}>
-                        <h1 className="paragraph bold big center ">Quick Sales Pro</h1>
+                        <h1 className="paragraph bold center ">Quick Sales Pro</h1>
                     </div>
                     <nav>
                         <ul>

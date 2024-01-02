@@ -6,11 +6,9 @@ import { Input } from "../forms/Input"
 import { Select } from "../forms/Select"
 
 export const SaleListComp = () => {
-    const { 
+    const {
         selectEtapas, selectedEtapasFilter, setSelectedEtapasFilter, selectChange,
         errorVerify, setErrorVerify,
-
-        
 
         nome, setNome,
         cpf_cnpj, setCpf_cpnj,
@@ -91,12 +89,16 @@ export const SaleListComp = () => {
                         <span className="paragraph grey1">Data Geração:</span>
                     </div>
                     <div className={styles.divSaleCard}>
-                        {saleListFilter.map(sale => (
-                            <SaleCard key={sale.id_venda} sale={sale} />
-                        ))}
+                        {saleListFilter && saleListFilter.length > 0 ? (
+                            saleListFilter.map(sale => (
+                                <SaleCard key={sale.id_venda} sale={sale} />
+                            ))
+                        ) : (
+                            <h1 className={`paragraph negative ${styles.noRegisterH1}`}>Nenhum registro encontrado!</h1>
+                        )}
                     </div>
-                </section>
-            </ul>
-        </div>
+                </section >
+            </ul >
+        </div >
     )
 }

@@ -181,17 +181,17 @@ export const RegisterSaleForm = () => {
             telefone_1: values.telefone_1,
             telefone_2: values.telefone_2,
             telefone_3: values.telefone_3,
-            endereco: formData.endereco,
+            endereco: cepIten.street,
             complemento_end: formData.complemento_end,
             numero_end: formData.numero_end,
             cep: values.cep,
-            bairro: formData.bairro,
-            cidade: formData.cidade,
-            uf: formData.uf,
+            bairro: cepIten.neighborhood,
+            cidade: cepIten.city,
+            uf: cepIten.state,
             dia_venc: selectDiaVenc.find(objeto => objeto.id === selectedDiaVenc).nome
         }
 
-        //console.log(vendaData)a
+        //console.log(vendaData)
         saleRegister(vendaData)
 
         document.documentElement.scrollTo({
@@ -216,7 +216,6 @@ export const RegisterSaleForm = () => {
         setSelectedDiaVenc(0)
 
         setCepIten({})
-
     }
 
     useEffect(() => {
@@ -238,9 +237,9 @@ export const RegisterSaleForm = () => {
 
 
     return (
-        <div className={styles.formcontainer}>
+        <div className={``}>
             <form onSubmit={handleSubmit(submit)} className={styles.flexbox}>
-                <div className={styles.flexbox}>
+                <div>
                     <RadioSelector
                         options={optionsRadio}
                         label="CPF ou CNPJ:"
@@ -249,7 +248,7 @@ export const RegisterSaleForm = () => {
                         onChange={handleRadioChange}
                     />
                 </div>
-                <div className={`${styles.flexbox} ${styles.otherSections}`}>
+                <div className={`${styles.divClientData} ${styles.otherSections}`}>
                     {selectedRadio === "cpf" && (
                         <>
                             <MaskedInput
@@ -387,8 +386,6 @@ export const RegisterSaleForm = () => {
                         label="Rua"
                         type="text"
                         value={cepIten?.street}
-                        {...register("endereco")}
-                        error={errors.endereco}
                         disabled={loadingNewSale}
                         placeholder="Rua do cliente"
                         onChange={(e) => setCepIten(prevCepIten => ({
@@ -416,8 +413,6 @@ export const RegisterSaleForm = () => {
                         label="Bairro"
                         type="text"
                         value={cepIten?.neighborhood}
-                        {...register("bairro")}
-                        error={errors.bairro}
                         disabled={loadingNewSale}
                         placeholder="Bairro do cliente"
                         onChange={(e) => setCepIten(prevCepIten => ({
@@ -429,8 +424,6 @@ export const RegisterSaleForm = () => {
                         label="Cidade"
                         type="text"
                         value={cepIten?.city}
-                        {...register("cidade")}
-                        error={errors.cidade}
                         disabled={loadingNewSale}
                         placeholder="Cidade do cliente"
                         onChange={(e) => setCepIten(prevCepIten => ({
@@ -442,8 +435,6 @@ export const RegisterSaleForm = () => {
                         label="UF"
                         type="text"
                         value={cepIten?.state}
-                        {...register("uf")}
-                        error={errors.uf}
                         disabled={loadingNewSale}
                         placeholder="UF do cliente"
                         onChange={(e) => setCepIten(prevCepIten => ({
@@ -453,7 +444,7 @@ export const RegisterSaleForm = () => {
                     />
                 </div>
 
-                <div className={`${styles.flexbox} ${styles.otherSections}`}>
+                <div className={`${styles.divSaleData} ${styles.otherSections}`}>
                     <Select
                         name="vendedor"
                         value={values.vendedor}

@@ -99,8 +99,8 @@ export const ControlSaleProvider = ({ children }) => {
             return nomeValido && dataValida && cpfCnpjValido && etapaValido
         })
 
-        // Ordenar a lista filtrada pela data (dt_ger) de forma decrescente
-        const sortedFilteredList = filteredList.sort((a, b) => new Date(b.dt_ger) - new Date(a.dt_ger))
+        // Ordenar a lista filtrada pelo número da venda (id_venda) de forma decrescente
+        const sortedFilteredList = filteredList.sort((a, b) => b.id_venda - a.id_venda)
 
         // Atualize a saleListFilter com os resultados da filtragem e ordenação
         setSaleListFilter(sortedFilteredList)

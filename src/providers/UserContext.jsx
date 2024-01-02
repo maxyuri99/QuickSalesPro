@@ -91,6 +91,7 @@ export const UserProvider = ({ children }) => {
             })
             setUser(data)
         } catch (error) {
+            userLogout()
             const errorMessage = JSON.stringify(error.response?.data.erro)
             console.log(errorMessage)
         } finally {
