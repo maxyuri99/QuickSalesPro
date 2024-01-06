@@ -1,0 +1,122 @@
+.saleListDiv {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 50px;
+    gap: 15px;
+
+    &>div:first-child {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    ul {
+        max-width: 100%;
+        padding: 10px;
+        border-radius: 10px;
+        background-color: var(--background-2);
+        overflow-x: auto;
+
+        &::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: var(--grey-1);
+            border-radius: 10px;
+        }
+    }
+}
+
+.sectionAllTabel {
+    width: 1000px;
+    white-space: nowrap;
+}
+
+.divSaleCard {
+    background-color: var(--grey-3);
+    border: 1px solid var(--grey-2);
+    border-radius: 10px;
+    padding: 5px;
+    overflow-x: auto;
+    max-height: 70vh;
+
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--grey-1);
+        border-radius: 10px;
+    }
+}
+
+
+.saleTitles {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+
+    span {
+        width: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+}
+
+.filterDivAll {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border: 1px solid var(--grey-3);
+    border-radius: 10px;
+    gap: 15px;
+
+    @media (min-width: 1024px) {
+
+        &>div:last-child {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+        }
+    }
+}
+
+.filterDivItens {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+    gap: 15px;
+
+    @media (min-width:1024px) {
+        flex-direction: row;    
+    }
+
+    &>div:first-child {
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+    }
+
+    &>div:last-child {
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+    }
+
+}
+
+.noRegisterH1{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

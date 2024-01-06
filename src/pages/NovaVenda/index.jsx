@@ -5,11 +5,11 @@ import { SaleContext } from "../../providers/SaleContext"
 import styles from "./style.module.scss"
 
 export const NovaVenda = () => {
-    const { loadingListSales } = useContext(SaleContext)
+    const { loadingCEPSale } = useContext(SaleContext)
     return (
-        <main className={styles.background}>
+        <div className={styles.background}>
             <DefaultTemplate>
-                {loadingListSales && (
+                {loadingCEPSale && (
                     <div className={styles.overlay}>
                         <div className={styles.spinner}></div>
                     </div>
@@ -19,6 +19,6 @@ export const NovaVenda = () => {
                     <RegisterSaleForm />
                 </div>
             </DefaultTemplate>
-        </main>
+        </div>
     )
 }

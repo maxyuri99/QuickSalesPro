@@ -11,22 +11,6 @@ import { RadioSelector } from "../Radio"
 import { useEffect } from "react"
 import { toast } from "react-toastify"
 
-
-const initialValues = {
-    cpf: '',
-    cnpj: '',
-    cpf_socio: '',
-    telefone_1: '',
-    telefone_2: '',
-    telefone_3: '',
-    cep: '',
-    vendedor: 0,
-    plano: 0,
-    formpag: 0,
-    banco: 0,
-    dia_venc: 0
-}
-
 export const RegisterSaleForm = () => {
     const {
         register,
@@ -41,14 +25,15 @@ export const RegisterSaleForm = () => {
         errorField: null,
         message: ''
     })
-    const [values, setValues] = useState(initialValues)
-    const [selectedRadio, setSelectedRadio] = useState("cpf")
 
     const {
         selectedUsuario, selectedProdutos, selectedFormPag,
         selectedDiaVenc, selectedBanco,
         setSelectedUsuario, setSelectedProdutos, setSelectedFormPag,
-        setSelectedDiaVenc, setSelectedBanco,
+        setSelectedDiaVenc, setSelectedBanco, values, setValues, initialValues,
+
+        selectChange, selectedRadio, setSelectedRadio,
+        handleChange,
 
         selectUsuario, selectProdutos, selectFormPag, selectDiaVenc, selectBanco,
         loadingNewSale, saleRegister, getCEP, cepIten, setCepIten } = useContext(SaleContext)
@@ -177,7 +162,7 @@ export const RegisterSaleForm = () => {
         // Dados da Venda
         const vendaData = {
             id_usuario: selectedUsuario,
-            etapa: 38,
+            etapa: 13, //Etapa Inicial é BKO ID 13 no banco
             ord_vendas: "",
             plano: selectedProdutos,
             periodo: formData.periodo,
@@ -196,19 +181,24 @@ export const RegisterSaleForm = () => {
             telefone_1: values.telefone_1,
             telefone_2: values.telefone_2,
             telefone_3: values.telefone_3,
-            endereco: formData.endereco,
+            endereco: cepIten.street,
             complemento_end: formData.complemento_end,
             numero_end: formData.numero_end,
             cep: values.cep,
-            bairro: formData.bairro,
-            cidade: formData.cidade,
-            uf: formData.uf,
+            bairro: cepIten.neighborhood,
+            cidade: cepIten.city,
+            uf: cepIten.state,
             dia_venc: selectDiaVenc.find(objeto => objeto.id === selectedDiaVenc).nome
         }
 
-        //console.log(vendaData)a
+        //console.log(vendaData)
         saleRegister(vendaData)
 
+        document.documentElement.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        })
+    
         reset()
 
         setValues(initialValues)
@@ -225,13 +215,7 @@ export const RegisterSaleForm = () => {
         setSelectedBanco(0)
         setSelectedDiaVenc(0)
 
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth',
-        })
-
         setCepIten({})
-
     }
 
     useEffect(() => {
@@ -239,20 +223,6 @@ export const RegisterSaleForm = () => {
             getCEP(values.cep)
         }
     }, [values.cep])
-
-    function handleChange(event) {
-        setValues({
-            ...values,
-            [event.target.name]: event.target.value
-        })
-    }
-
-    function selectChange(name, valueIten) {
-        setValues({
-            ...values,
-            [name]: valueIten
-        })
-    }
 
     const handleRadioChange = (value) => {
         setSelectedRadio(value);
@@ -267,9 +237,9 @@ export const RegisterSaleForm = () => {
 
 
     return (
-        <div className={styles.formcontainer}>
+        <div className={``}>
             <form onSubmit={handleSubmit(submit)} className={styles.flexbox}>
-                <div className={styles.flexbox}>
+                <div>
                     <RadioSelector
                         options={optionsRadio}
                         label="CPF ou CNPJ:"
@@ -278,10 +248,11 @@ export const RegisterSaleForm = () => {
                         onChange={handleRadioChange}
                     />
                 </div>
-                <div className={`${styles.flexbox} ${styles.otherSections}`}>
+                <div className={`${styles.divClientData} ${styles.otherSections}`}>
                     {selectedRadio === "cpf" && (
                         <>
                             <MaskedInput
+                                type="number"
                                 label="CPF"
                                 name="cpf"
                                 mask="999.999.999-99"
@@ -313,6 +284,7 @@ export const RegisterSaleForm = () => {
                     {selectedRadio === "cnpj" && (
                         <>
                             <MaskedInput
+                                type="number"
                                 label="CNPJ"
                                 name="cnpj"
                                 mask="99.999.999/9999-99"
@@ -325,6 +297,7 @@ export const RegisterSaleForm = () => {
                             />
 
                             <MaskedInput
+                                type="number"
                                 label="CPF Sócio"
                                 name="cpf_socio"
                                 mask="999.999.999-99"
@@ -362,6 +335,7 @@ export const RegisterSaleForm = () => {
                         placeholder="Email do cliente"
                     />
                     <MaskedInput
+                        type="number"
                         label="Telefone Principal"
                         name="telefone_1"
                         mask="(99)9 9999-9999"
@@ -373,6 +347,7 @@ export const RegisterSaleForm = () => {
                         setErrorVerify={setErrorVerify}
                     />
                     <MaskedInput
+                        type="number"
                         label="Telefone Residencial"
                         name="telefone_2"
                         mask="(99) 9999-9999"
@@ -384,6 +359,7 @@ export const RegisterSaleForm = () => {
                         setErrorVerify={setErrorVerify}
                     />
                     <MaskedInput
+                        type="number"
                         label="Telefone Reserva"
                         name="telefone_3"
                         mask="(99)9 9999-9999"
@@ -395,6 +371,7 @@ export const RegisterSaleForm = () => {
                         setErrorVerify={setErrorVerify}
                     />
                     <MaskedInput
+                        type="number"
                         label="CEP"
                         name="cep"
                         mask="99999-999"
@@ -409,8 +386,6 @@ export const RegisterSaleForm = () => {
                         label="Rua"
                         type="text"
                         value={cepIten?.street}
-                        {...register("endereco")}
-                        error={errors.endereco}
                         disabled={loadingNewSale}
                         placeholder="Rua do cliente"
                         onChange={(e) => setCepIten(prevCepIten => ({
@@ -420,7 +395,7 @@ export const RegisterSaleForm = () => {
                     />
                     <Input
                         label="Numero Residencial"
-                        type="text"
+                        type="number"
                         {...register("numero_end")}
                         error={errors.numero_end}
                         disabled={loadingNewSale}
@@ -438,8 +413,6 @@ export const RegisterSaleForm = () => {
                         label="Bairro"
                         type="text"
                         value={cepIten?.neighborhood}
-                        {...register("bairro")}
-                        error={errors.bairro}
                         disabled={loadingNewSale}
                         placeholder="Bairro do cliente"
                         onChange={(e) => setCepIten(prevCepIten => ({
@@ -450,9 +423,7 @@ export const RegisterSaleForm = () => {
                     <Input
                         label="Cidade"
                         type="text"
-                        value={cepIten?.city || ""}
-                        {...register("cidade")}
-                        error={errors.cidade}
+                        value={cepIten?.city}
                         disabled={loadingNewSale}
                         placeholder="Cidade do cliente"
                         onChange={(e) => setCepIten(prevCepIten => ({
@@ -464,8 +435,6 @@ export const RegisterSaleForm = () => {
                         label="UF"
                         type="text"
                         value={cepIten?.state}
-                        {...register("uf")}
-                        error={errors.uf}
                         disabled={loadingNewSale}
                         placeholder="UF do cliente"
                         onChange={(e) => setCepIten(prevCepIten => ({
@@ -475,7 +444,7 @@ export const RegisterSaleForm = () => {
                     />
                 </div>
 
-                <div className={`${styles.flexbox} ${styles.otherSections}`}>
+                <div className={`${styles.divSaleData} ${styles.otherSections}`}>
                     <Select
                         name="vendedor"
                         value={values.vendedor}
@@ -530,7 +499,7 @@ export const RegisterSaleForm = () => {
                     />
                     <Input
                         label="Agencia"
-                        type="text"
+                        type="number"
                         {...register("agencia")}
                         error={errors.agencia}
                         disabled={loadingNewSale}
@@ -538,7 +507,7 @@ export const RegisterSaleForm = () => {
                     />
                     <Input
                         label="Conta"
-                        type="text"
+                        type="number"
                         {...register("conta")}
                         error={errors.conta}
                         disabled={loadingNewSale}

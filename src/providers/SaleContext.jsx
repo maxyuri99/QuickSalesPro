@@ -8,42 +8,37 @@ import { UserContext } from "./UserContext"
 
 export const SaleContext = createContext({})
 
+const initialValues = {
+    cpf: '',
+    cnpj: '',
+    cpf_socio: '',
+    telefone_1: '',
+    telefone_2: '',
+    telefone_3: '',
+    cep: '',
+    vendedor: 0,
+    plano: 0,
+    formpag: 0,
+    banco: 0,
+    dia_venc: 0
+}
+
 
 export const SaleProvider = ({ children }) => {
-    const { userLogout, navigateUser } = useContext(UserContext)
+    const { userLogout } = useContext(UserContext)
 
-    // ###### pagina de Controle de Vendas ######
-    const [saleList, setSaleList] = useState([])
-    const [loadingListSales, setLoadingListSales] = useState(false)
-
-    const token = localStorage.getItem("@TOKENACESS")
-
-    const getSales = async () => {
-        try {
-            setLoadingListSales(true)
-            const { data } = await apiQsp.get('/v1/vendas/all', {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                }
-            })
-
-            setSaleList(data)
-
-        } catch (error) {
-            console.log(error)
-        } finally {
-            setLoadingListSales(false)
-        }
-    }
-
-    // ########################################################
-
+    const localStorageID = localStorage.getItem("@USERID")
+    const userID = parseInt(localStorageID, 10)
 
     // ####### Pagina de nova venda ##########################
     const [dataFetched, setDataFetched] = useState(false)
 
+    const [values, setValues] = useState(initialValues)
+
+    const [selectedRadio, setSelectedRadio] = useState("cpf")
+
     // Item Selecionado
-    const [selectedUsuario, setSelectedUsuario] = useState(0)
+    const [selectedUsuario, setSelectedUsuario] = useState(userID)
     const [selectedProdutos, setSelectedProdutos] = useState(0)
     const [selectedFormPag, setSelectedFormPag] = useState(0)
     const [selectedBanco, setSelectedBanco] = useState(0)
@@ -58,6 +53,7 @@ export const SaleProvider = ({ children }) => {
 
     const [loadingNewSale, setLoadingNewSale] = useState(false)
     const [loadingItensSale, setLoadingItensSale] = useState(false)
+    const [loadingCEPSale, setLoadingCEPSales] = useState(false)
 
     const [cepIten, setCepIten] = useState()
 
@@ -87,7 +83,7 @@ export const SaleProvider = ({ children }) => {
 
     const getCEP = async (cep) => {
         try {
-            setLoadingListSales(true)
+            setLoadingCEPSales(true)
             const { data } = await apiCEP.get(`/api/cep/v1/${cep}`)
 
             setCepIten(data)
@@ -97,7 +93,7 @@ export const SaleProvider = ({ children }) => {
             toast.error("CEP não encontrado")
             //res.status(500).json({ error: 'Internal Server Error' })
         } finally {
-            setLoadingListSales(false)
+            setLoadingCEPSales(false)
         }
     }
 
@@ -209,19 +205,36 @@ export const SaleProvider = ({ children }) => {
             fetchData()
         }
     }, [tokenEffect])
-    // #############################################################################
+
+    function selectChange(name, valueIten) {
+        setValues({
+            ...values,
+            [name]: valueIten
+        })
+    }
+
+    function handleChange(event) {
+        setValues({
+            ...values,
+            [event.target.name]: event.target.value
+        })
+    }
+
+
     return (
         <SaleContext.Provider value={{
-            saleList, getSales, saleRegister,
+            saleRegister, selectChange,
 
             selectedUsuario, selectedProdutos, selectedFormPag,
             setSelectedUsuario, setSelectedProdutos, setSelectedFormPag,
             selectedBanco, setSelectedBanco, selectedDiaVenc, setSelectedDiaVenc,
 
             selectUsuario, selectProdutos, selectFormPag, selectDiaVenc, selectBanco,
-
-            loadingNewSale, loadingItensSale,
-            loadingListSales, setLoadingListSales, getCEP, cepIten, setCepIten
+            setSelectedRadio, selectedRadio,
+            handleChange,
+            initialValues, values, setValues,
+            loadingNewSale, loadingItensSale, loadingCEPSale,
+            getCEP, cepIten, setCepIten
         }}>
             {children}
         </SaleContext.Provider>

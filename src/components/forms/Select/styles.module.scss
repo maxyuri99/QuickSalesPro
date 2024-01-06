@@ -1,5 +1,5 @@
 .flexboxSelect {
-    width: 300px;
+    min-width: 200px;
     display: flex;
     flex-direction: column;
     margin-top: 15px;
@@ -24,6 +24,7 @@
         text-overflow: ellipsis;
         max-width: calc(100% - 30px);
     }
+    
 }
 
 .itensbox {
@@ -54,6 +55,15 @@
         &:hover {
             background: var(--background-all);
         }
+    }
+
+    &::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--grey-1);
+        border-radius: 10px;
     }
 }
 

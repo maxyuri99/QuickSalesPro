@@ -4,15 +4,25 @@
     gap: 1rem;
 }
 
-.inputiten {
+.textArea {
     border-color: none;
-    border-radius: 50px;
+    border-radius: 20px;
     background-color: var(--grey-2);
     padding: 15px 19px;
+    resize: none;
 
     color: var(--grey-0);
 
     :focus {
         border-color: var(--grey-0);
+    }
+
+    &::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--grey-1);
+        border-radius: 10px;
     }
 }

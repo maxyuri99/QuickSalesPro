@@ -2,29 +2,39 @@ import { Link } from "react-router-dom"
 import { UserContext } from "../../providers/UserContext"
 import { useContext } from "react"
 import styles from "./style.module.scss"
+import { LiaUserCircleSolid, LiaBarsSolid, LiaChalkboardSolid, LiaClipboardListSolid, LiaCartPlusSolid } from "react-icons/lia"
 
-export const Header = ({ }) => {
-    const { user, userLogout } = useContext(UserContext)
+export const Header = ({ children }) => {
+    const { user, userLogout, isHeaderExpanded, setHeaderExpanded } = useContext(UserContext)
 
     return (
-        <header>
-            <div className={styles.flexbox}>
-                <div className={styles.header}>
-                    <div>
-                        <div className="paragraph bold center">
-                            <p>{user?.nome}</p>
-                        </div>
+        <div className="container">
+            <div className={styles.headerUser}>
+                <div>
+                    <LiaBarsSolid className="title bold grey1 click" onClick={() => {setHeaderExpanded(!isHeaderExpanded)}} />
+                </div>
+                <div>
+                    <LiaUserCircleSolid className="title bold grey1" />
+                    <p className="paragraph bold grey1">{user?.nome}</p>
+                </div>
+            </div>
+            <div className="ajustPage">
+                <div className={styles.headerPages}>
+                    <div className={styles.divQuick}>
+                        <h1 className="paragraph bold center ">Quick Sales Pro</h1>
                     </div>
                     <nav>
                         <ul>
                             <li>
-                                <Link to='/quicksalespro/dashboard' className="paragraph">
+                                <LiaChalkboardSolid className="paragraph big" />
+                                <Link to='/quicksalespro/dashboard' className="paragraph small">
                                     Dashboard
                                 </Link>
                             </li>
                             {(user.cargo === 1 || user.cargo === 4 || user.cargo === 5) ? (
                                 <li>
-                                    <Link to='/quicksalespro/controle_vendas' className="paragraph">
+                                    <LiaClipboardListSolid className="paragraph big" />
+                                    <Link to='/quicksalespro/controle_vendas' className="paragraph small">
                                         Controle de Vendas
                                     </Link>
                                 </li>
@@ -32,7 +42,8 @@ export const Header = ({ }) => {
 
                             {(user.cargo !== 0) ? (
                                 <li>
-                                    <Link to='/quicksalespro/nova_venda' className="paragraph">
+                                    <LiaCartPlusSolid className="paragraph big" />
+                                    <Link to='/quicksalespro/nova_venda' className="paragraph small">
                                         Nova Venda
                                     </Link>
                                 </li>
@@ -46,7 +57,10 @@ export const Header = ({ }) => {
                         </ul>
                     </nav>
                 </div>
+                <div className="divChildren">
+                    {children}
+                </div>
             </div>
-        </header>
+        </div>
     )
 }

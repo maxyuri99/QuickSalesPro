@@ -1,5 +1,6 @@
 import React from 'react'
 import InputMask from 'react-input-mask'
+import styles from "./style.module.scss"
 
 const onlyNumbers = (str) => str.replace(/[^0-9]/g, '')
 
@@ -21,14 +22,14 @@ export const MaskedInput = ({ placeholder, label, value, onChange, name, mask, d
     }
 
     return (
-        <div className="flexgap1">
+        <div className={styles.flexbox}>
             <label className="paragraph center grey2">{label}</label>
             <InputMask
                 name={name}
                 mask={mask}
                 value={value}
                 onChange={handleChange}
-                className="input paragraph grey0"
+                className={`${styles.inputiten} paragraph grey0`}
                 placeholder={placeholder}
                 disabled={disabled}
             />

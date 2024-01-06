@@ -28,6 +28,11 @@
             }
         }
 
+        &.big{
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
         &.primaryNegative {
             background: var(--color-focus);
 
