@@ -8,6 +8,9 @@ import { UserContext } from "./UserContext"
 
 export const SaleContext = createContext({})
 
+const localStorageID = localStorage.getItem("@USERID")
+const userID = parseInt(localStorageID, 10)
+
 const initialValues = {
     cpf: '',
     cnpj: '',
@@ -16,7 +19,7 @@ const initialValues = {
     telefone_2: '',
     telefone_3: '',
     cep: '',
-    vendedor: 0,
+    vendedor: userID,
     plano: 0,
     formpag: 0,
     banco: 0,
@@ -27,8 +30,7 @@ const initialValues = {
 export const SaleProvider = ({ children }) => {
     const { userLogout } = useContext(UserContext)
 
-    const localStorageID = localStorage.getItem("@USERID")
-    const userID = parseInt(localStorageID, 10)
+
 
     // ####### Pagina de nova venda ##########################
     const [dataFetched, setDataFetched] = useState(false)
@@ -91,7 +93,6 @@ export const SaleProvider = ({ children }) => {
         } catch (error) {
             console.log(error)
             toast.error("CEP não encontrado")
-            //res.status(500).json({ error: 'Internal Server Error' })
         } finally {
             setLoadingCEPSales(false)
         }

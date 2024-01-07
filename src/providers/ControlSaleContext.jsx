@@ -20,6 +20,8 @@ export const ControlSaleProvider = ({ children }) => {
     const [saleListFilter, setSaleListFilter] = useState([])
     const [loadingListSales, setLoadingListSales] = useState(false)
 
+    const [saleRegisterList, setSaleRegisterList] = useState([])
+
     const [dataFetched, setDataFetched] = useState(false)
     const [selectedEtapas, setSelectedEtapas] = useState(0)
     const [selectEtapas, setSelectEtapas] = useState(0)
@@ -94,10 +96,9 @@ export const ControlSaleProvider = ({ children }) => {
                 filtro.etapa === "Todos" ||
                 (sale.nome_etapa && sale.nome_etapa.toLowerCase() === filtro.etapa.toLowerCase())
 
-
-
             return nomeValido && dataValida && cpfCnpjValido && etapaValido
         })
+
 
         // Ordenar a lista filtrada pelo número da venda (id_venda) de forma decrescente
         const sortedFilteredList = filteredList.sort((a, b) => b.id_venda - a.id_venda)
@@ -134,6 +135,24 @@ export const ControlSaleProvider = ({ children }) => {
             console.log(error)
         } finally {
             setLoadingListSales(false)
+        }
+    }
+
+    const getRegisterID = async (id_venda) => {
+        try {
+
+            const { data } = await apiQsp.get(`/v1/vendas/register/${id_venda}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+
+            setSaleRegisterList(data)
+
+        } catch (error) {
+            console.error('Erro ao buscar registro de alteração:', error)
+        } finally {
+
         }
     }
 
@@ -316,6 +335,7 @@ export const ControlSaleProvider = ({ children }) => {
     const closeModal = () => {
         setCurrentSale(null)
         setItensPatch(null)
+        setSaleRegisterList([])
     }
 
     const handleUpdateList = async () => {
@@ -324,6 +344,7 @@ export const ControlSaleProvider = ({ children }) => {
 
             setSelectedEtapasFilter(0)
             handleFilterClick()
+            setSaleRegisterList([])
         } catch (error) {
             console.error(error)
         }
@@ -358,7 +379,8 @@ export const ControlSaleProvider = ({ children }) => {
 
             itensPatch, setItensPatch,
             handleUpdateList, patchSale,
-            loadingListSales
+            loadingListSales,
+            getRegisterID, saleRegisterList, setSaleRegisterList
         }}>
             {children}
         </ControlSaleContext.Provider>
