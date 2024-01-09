@@ -23,14 +23,14 @@ export const SaleEditModal = () => {
 
         selectChange,
 
-        patchSale,
+        patchSale, saleListFilter,
 
         selectUsuario, selectProdutos, selectFormPag, selectDiaVenc,
 
         selectedUsuario, selectedProdutos, selectedFormPag,
         setSelectedUsuario, setSelectedProdutos, setSelectedFormPag,
         selectedDiaVenc, setSelectedDiaVenc,
-        errorVerify, setErrorVerify,
+        errorVerify, setErrorVerify, saleRegisterList
     } = useContext(ControlSaleContext)
 
 
@@ -66,6 +66,7 @@ export const SaleEditModal = () => {
 
         const arrayPatchCliente = {}
         const arrayPatchVenda = {}
+        const arrayPatchRegister = {}
 
         // Lógica de verificação e salvamento aqui, se necessário
         const compareAndLogChange = (fieldName, formDataValue, currentSaleValue, pertence) => {
@@ -90,9 +91,14 @@ export const SaleEditModal = () => {
                 arrayPatchVenda[fieldName] = formDataValue
             }
 
+            if (formDataValue !== currentSaleValue && pertence === "register") {
+                //console.log(` Iten Depois ${fieldName} = ${formDataValue}`)
+                arrayPatchRegister[fieldName] = formDataValue
+            }
+
         }
 
-        const arrayPatch = { cliente: arrayPatchCliente, venda: arrayPatchVenda }
+        const arrayPatch = { cliente: arrayPatchCliente, venda: arrayPatchVenda, register: arrayPatchRegister }
 
 
         // Cliente
@@ -125,6 +131,36 @@ export const SaleEditModal = () => {
         compareAndLogChange("dia_venc", selectedDiaVenc, currentSale.dia_venc, "venda")
         compareAndLogChange("periodo", data.periodo, currentSale.periodo, "venda")
         compareAndLogChange("observacao", data.observacao, currentSale.observacao, "venda")
+
+        // Register
+        compareAndLogChange("nome", data.nome, currentSale.nome_cliente, "register")
+        compareAndLogChange("cpf", data.cpf, retiraCaracteres(currentSale.cpf), "register")
+        compareAndLogChange("cnpj", data.cnpj, retiraCaracteres(currentSale.cnpj), "register")
+        compareAndLogChange("dt_nascimento", data.data_nascimento, formatarData(currentSale.dt_nascimento), "register")
+        compareAndLogChange("nome_mae", data.nome_mae, currentSale.nome_mae, "register")
+        compareAndLogChange("email", data.email, currentSale.email, "register")
+        compareAndLogChange("telefone_1", data.telefone_1, currentSale.telefone_1, "register")
+        compareAndLogChange("telefone_2", data.telefone_2, currentSale.telefone_2, "register")
+        compareAndLogChange("telefone_3", data.telefone_3, currentSale.telefone_3, "register")
+        compareAndLogChange("cep", data.cep, currentSale.cep, "register")
+        compareAndLogChange("endereco", data.rua, currentSale.endereco, "register")
+        compareAndLogChange("numero", data.numero, currentSale.numero_end, "register")
+        compareAndLogChange("bairro", data.bairro, currentSale.bairro, "register")
+        compareAndLogChange("cidade", data.cidade, currentSale.cidade, "register")
+        compareAndLogChange("uf", data.uf, currentSale.uf, "register")
+        compareAndLogChange("dt_instalacao", data.data_instalacao, formatarData(currentSale.dt_instalacao), "register")
+        compareAndLogChange("vendedor", selectUsuario.find((set) => set.id_usuario === selectedUsuario).nome, currentSale.nome_usuario, "register")
+        compareAndLogChange("plano", selectProdutos.find((set) => set.id_produto === selectedProdutos).nome , currentSale.nome_produto, "register")
+        compareAndLogChange("tipo_pagmento", selectFormPag.find((set) => set.id_formpag === selectedFormPag).nome , currentSale.form_pag, "register")
+        compareAndLogChange("etapa", selectEtapas.find((set) => set.id_etapa === selectedEtapas).nome , currentSale.nome_etapa, "register")
+        compareAndLogChange("banco", data.banco, currentSale.banco, "register")
+        compareAndLogChange("agencia", data.agencia, currentSale.agencia, "register")
+        compareAndLogChange("conta", data.conta, currentSale.conta, "register")
+
+        compareAndLogChange("dia_venc", selectDiaVenc.find((set) => set.id === selectedDiaVenc).nome , selectDiaVenc.find((set) => set.id === currentSale.dia_venc).nome , "register")
+
+        compareAndLogChange("periodo", data.periodo, currentSale.periodo, "register")
+        compareAndLogChange("observacao", data.observacao, currentSale.observacao, "register")
 
         if (Object.keys(arrayPatch.cliente).length === 0 && Object.keys(arrayPatch.venda).length === 0) {
             toast.info("Nenhum item foi alterado!")
@@ -364,6 +400,20 @@ export const SaleEditModal = () => {
                             rows={5}
                             defaultValue={currentSale.observacao}
                         />
+                    </div>
+                    <h1 className="title center grey0">Registro de Alteração</h1>
+                    <div className={styles.contentBoxGrid}>
+                        <ul>
+                            {saleRegisterList && saleRegisterList.length > 0 ? (
+                                saleRegisterList.map(sale => (
+                                    <li className="paragraph bold grey1" key={sale.id_registersale}>{sale.descricao.split('\n').map((line, index) => (
+                                        <p key={index}>{line} <br /></p>
+                                    ))} </li>
+                                ))
+                            ) : (
+                                <h1 className={`paragraph negative ${styles.noRegisterH1}`}>Nenhum registro encontrado!</h1>
+                            )}
+                        </ul>
                     </div>
                     <button type="submit" className="btn solid primary full big">Salvar</button>
                 </form>

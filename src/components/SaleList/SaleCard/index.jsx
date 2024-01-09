@@ -3,10 +3,11 @@ import { ControlSaleContext } from "../../../providers/ControlSaleContext"
 import styles from "./style.module.scss"
 
 export const SaleCard = ({ sale }) => {
-    const { setCurrentSale, currentSale } = useContext(ControlSaleContext)
+    const { setCurrentSale, getRegisterID, saleRegisterList, setSaleRegisterList } = useContext(ControlSaleContext)
 
     const saleIten = (iten)=>{
         setCurrentSale(iten)
+        getRegisterID(iten.id_venda)
     }
     return (
         <li className={styles.saleCard} onClick={() => { saleIten({...sale})}} >

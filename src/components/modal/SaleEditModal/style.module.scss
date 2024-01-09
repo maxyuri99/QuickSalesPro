@@ -75,3 +75,34 @@
         }
     }
 }
+
+.noRegisterH1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contentBoxGrid {
+    width: 100%;
+    max-height: 500px;
+    display: flex;
+    gap: 16px;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+
+    background: var(--background-all);
+
+    border: 1px solid var(--grey-3);
+    border-radius: 10px;
+    padding: 15px;
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--grey-1);
+        border-radius: 10px;
+    }
+}

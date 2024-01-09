@@ -18,7 +18,7 @@ export const RegisterSaleForm = () => {
         formState: { errors },
         reset,
     } = useForm({
-        resolver: zodResolver(registerSaleFormSchema)
+        resolver: zodResolver(registerSaleFormSchema(SaleContext))
     })
     const [errorVerify, setErrorVerify] = useState({
         hasError: false,
@@ -133,7 +133,7 @@ export const RegisterSaleForm = () => {
             return
         }
 
-        if (values.banco === 0) {
+        if (values.banco === 0 && selectedFormPag === 1) {
             console.log("Erro: banco inválido")
             setErrorVerify({
                 hasError: true,
@@ -167,9 +167,15 @@ export const RegisterSaleForm = () => {
             plano: selectedProdutos,
             periodo: formData.periodo,
             tipo_pagmento: selectedFormPag,
-            banco: selectBanco.find(objeto => objeto.id === selectedBanco).nome,
-            agencia: formData.agencia,
-            conta: formData.conta,
+            banco: selectedFormPag === 1 ? (
+                selectBanco.find(objeto => objeto.id === selectedBanco).nome
+            ) : (''),
+            agencia: selectedFormPag === 1 ? (
+                formData.agencia 
+             ) : (''),
+            conta: selectedFormPag === 1 ? (
+                formData.conta
+             ) : (''),
             observacao: formData.observacao,
             nome: formData.nome,
             email: formData.email,
@@ -188,17 +194,17 @@ export const RegisterSaleForm = () => {
             bairro: cepIten.neighborhood,
             cidade: cepIten.city,
             uf: cepIten.state,
-            dia_venc: selectDiaVenc.find(objeto => objeto.id === selectedDiaVenc).nome
+            dia_venc: selectedDiaVenc,
         }
 
-        //console.log(vendaData)
+        //console.log(selectedBanco)
         saleRegister(vendaData)
 
         document.documentElement.scrollTo({
             top: 0,
             behavior: 'smooth',
         })
-    
+
         reset()
 
         setValues(initialValues)
@@ -234,7 +240,6 @@ export const RegisterSaleForm = () => {
             message: ''
         });
     }
-
 
     return (
         <div className={``}>
@@ -484,35 +489,39 @@ export const RegisterSaleForm = () => {
                         errorVerify={errorVerify}
                         setErrorVerify={setErrorVerify}
                     />
-                    <Select
-                        name="banco"
-                        value={values.banco}
-                        selectChange={selectChange}
-                        options={selectBanco}
-                        id={selectedBanco}
-                        onChange={setSelectedBanco}
-                        disabled={loadingNewSale}
-                        placeholder="Banco"
-                        label="Banco"
-                        errorVerify={errorVerify}
-                        setErrorVerify={setErrorVerify}
-                    />
-                    <Input
-                        label="Agencia"
-                        type="number"
-                        {...register("agencia")}
-                        error={errors.agencia}
-                        disabled={loadingNewSale}
-                        placeholder="Agencia do cliente"
-                    />
-                    <Input
-                        label="Conta"
-                        type="number"
-                        {...register("conta")}
-                        error={errors.conta}
-                        disabled={loadingNewSale}
-                        placeholder="Conta do cliente"
-                    />
+                    {selectedFormPag === 1 ? (
+                        <>
+                            <Select
+                                name="banco"
+                                value={values.banco}
+                                selectChange={selectChange}
+                                options={selectBanco}
+                                id={selectedBanco}
+                                onChange={setSelectedBanco}
+                                disabled={loadingNewSale}
+                                placeholder="Banco"
+                                label="Banco"
+                                errorVerify={errorVerify}
+                                setErrorVerify={setErrorVerify}
+                            />
+                            <Input
+                                label="Agencia"
+                                type="number"
+                                {...register("agencia")}
+                                error={errors.agencia}
+                                disabled={loadingNewSale}
+                                placeholder="Agencia do cliente"
+                            />
+                            <Input
+                                label="Conta"
+                                type="number"
+                                {...register("conta")}
+                                error={errors.conta}
+                                disabled={loadingNewSale}
+                                placeholder="Conta do cliente"
+                            />
+                        </>
+                    ) : (null)}
                     <Select
                         name="dia_venc"
                         value={values.dia_venc}
