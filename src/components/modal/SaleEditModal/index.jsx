@@ -157,11 +157,14 @@ export const SaleEditModal = () => {
         compareAndLogChange("agencia", data.agencia, currentSale.agencia, "register")
         compareAndLogChange("conta", data.conta, currentSale.conta, "register")
 
-        compareAndLogChange("dia_venc", selectDiaVenc.find((set) => set.id === selectedDiaVenc).nome , selectDiaVenc.find((set) => set.id === currentSale.dia_venc).nome , "register")
+        if (selectedDiaVenc){
+            compareAndLogChange("dia_venc", selectDiaVenc.find((set) => set.id === selectedDiaVenc).nome , selectDiaVenc.find((set) => set.id === currentSale.dia_venc).nome , "register")
+        }
 
         compareAndLogChange("periodo", data.periodo, currentSale.periodo, "register")
         compareAndLogChange("observacao", data.observacao, currentSale.observacao, "register")
 
+        
         if (Object.keys(arrayPatch.cliente).length === 0 && Object.keys(arrayPatch.venda).length === 0) {
             toast.info("Nenhum item foi alterado!")
         } else {
