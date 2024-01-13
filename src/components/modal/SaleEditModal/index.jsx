@@ -165,8 +165,9 @@ export const SaleEditModal = () => {
         if (Object.keys(arrayPatch.cliente).length === 0 && Object.keys(arrayPatch.venda).length === 0) {
             toast.info("Nenhum item foi alterado!")
         } else {
+            console.log(arrayPatch)
             patchSale(currentSale.id_venda, arrayPatch)
-            closeModal()
+            //closeModal()
         }
 
     }
