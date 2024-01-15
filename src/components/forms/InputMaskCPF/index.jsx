@@ -32,6 +32,7 @@ export const MaskedInput = ({ placeholder, label, value, onChange, name, mask, d
                 className={`${styles.inputiten} paragraph grey0`}
                 placeholder={placeholder}
                 disabled={disabled}
+                inputProps={{ pattern: "\\d*" }}
             />
             {errorVerify.hasError && errorVerify.errorField === name && (
                 <p className="paragraph negative center">{errorVerify.message}</p>

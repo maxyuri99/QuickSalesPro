@@ -153,6 +153,18 @@ export const RegisterSaleForm = () => {
             return
         }
 
+        if (formData.agencia.length === 0 && selectedFormPag === 1) {
+            console.log("Erro: Agência inválida")
+            toast.error("Agência deve ser preenchida")
+            return
+        }
+
+        if (formData.conta.length === 0 && selectedFormPag === 1) {
+            console.log("Erro: Conta inválida")
+            toast.error("Conta deve ser preenchida")
+            return
+        }
+
         if ((!formData.bairro && !cepIten.neighborhood) || (!formData.cidade && !cepIten.city) || (!formData.uf && !cepIten.state) || (!formData.endereco && !cepIten.street)) {
             console.log("Erro: Itens endereço inválidos")
             toast.error("Você deve preencher todos os itens do endereço")
@@ -197,7 +209,6 @@ export const RegisterSaleForm = () => {
             dia_venc: selectedDiaVenc,
         }
 
-        //console.log(selectedBanco)
         saleRegister(vendaData)
 
         document.documentElement.scrollTo({

@@ -61,8 +61,8 @@ export const SaleEditModal = () => {
     }
 
     const onSubmit = (data) => {
-        // console.log("Dados do formulário:", data)
-        // console.log("Dados do current:", currentSale)
+         //console.log("Dados do formulário:", data)
+         //console.log("Dados do current:", currentSale)
 
         const arrayPatchCliente = {}
         const arrayPatchVenda = {}
@@ -114,6 +114,7 @@ export const SaleEditModal = () => {
         compareAndLogChange("cep", data.cep, currentSale.cep, "cliente")
         compareAndLogChange("endereco", data.rua, currentSale.endereco, "cliente")
         compareAndLogChange("numero", data.numero, currentSale.numero_end, "cliente")
+        compareAndLogChange("complemento_end", data.complemento, currentSale.complemento_end, "cliente")
         compareAndLogChange("bairro", data.bairro, currentSale.bairro, "cliente")
         compareAndLogChange("cidade", data.cidade, currentSale.cidade, "cliente")
         compareAndLogChange("uf", data.uf, currentSale.uf, "cliente")
@@ -145,6 +146,7 @@ export const SaleEditModal = () => {
         compareAndLogChange("cep", data.cep, currentSale.cep, "register")
         compareAndLogChange("endereco", data.rua, currentSale.endereco, "register")
         compareAndLogChange("numero", data.numero, currentSale.numero_end, "register")
+        compareAndLogChange("complemento_end", data.complemento, currentSale.complemento_end, "register")
         compareAndLogChange("bairro", data.bairro, currentSale.bairro, "register")
         compareAndLogChange("cidade", data.cidade, currentSale.cidade, "register")
         compareAndLogChange("uf", data.uf, currentSale.uf, "register")
@@ -157,7 +159,9 @@ export const SaleEditModal = () => {
         compareAndLogChange("agencia", data.agencia, currentSale.agencia, "register")
         compareAndLogChange("conta", data.conta, currentSale.conta, "register")
 
-        compareAndLogChange("dia_venc", selectDiaVenc.find((set) => set.id === selectedDiaVenc).nome , selectDiaVenc.find((set) => set.id === currentSale.dia_venc).nome , "register")
+        if (selectedDiaVenc){
+            compareAndLogChange("dia_venc", selectDiaVenc.find((set) => set.id === selectedDiaVenc).nome , selectDiaVenc.find((set) => set.id === currentSale.dia_venc).nome , "register")
+        }
 
         compareAndLogChange("periodo", data.periodo, currentSale.periodo, "register")
         compareAndLogChange("observacao", data.observacao, currentSale.observacao, "register")
@@ -271,6 +275,13 @@ export const SaleEditModal = () => {
                             {...register("numero")}
                             placeholder="Numero da Casa"
                             defaultValue={currentSale.numero_end}
+                        />
+                        <Input
+                            label="Complemento"
+                            type="text"
+                            {...register("complemento")}
+                            placeholder="Complemento..."
+                            defaultValue={currentSale.complemento_end}
                         />
                         <Input
                             label="Bairro"
