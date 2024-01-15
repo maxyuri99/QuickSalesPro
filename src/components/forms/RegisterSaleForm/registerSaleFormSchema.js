@@ -20,6 +20,8 @@ export const registerSaleFormSchema = (saleContext) => {
             email: z.string().email("Email inválido").nonempty("O e-mail é obrigatório"),
             nome_mae: z.string(),
             numero_end: z.string().nonempty("O número do endereço é obrigatório"),
+            agencia: z.string(),
+            conta: z.string(),
             complemento_end: z.string(),
             observacao: z.string(),
         });
