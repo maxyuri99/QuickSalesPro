@@ -23,14 +23,14 @@ const initialValues = {
     plano: 0,
     formpag: 0,
     banco: 0,
-    dia_venc: 0
+    dia_venc: 0,
+    agencia: 0,
+    conta: 0,
 }
 
 
 export const SaleProvider = ({ children }) => {
     const { userLogout } = useContext(UserContext)
-
-
 
     // ####### Pagina de nova venda ##########################
     const [dataFetched, setDataFetched] = useState(false)
