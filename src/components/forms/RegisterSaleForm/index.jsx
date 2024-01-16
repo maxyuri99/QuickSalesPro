@@ -154,7 +154,6 @@ export const RegisterSaleForm = () => {
             return
         }
 
-        console.log(values)
         if (values.agencia.length === 0 && selectedFormPag === 1) {
             console.log("Erro: Agência inválida")
             toast.error("Agência deve ser preenchida")
@@ -211,7 +210,6 @@ export const RegisterSaleForm = () => {
             dia_venc: selectedDiaVenc,
         }
 
-        //console.log(vendaData)
         saleRegister(vendaData)
 
         document.documentElement.scrollTo({
