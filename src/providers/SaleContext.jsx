@@ -45,6 +45,7 @@ export const SaleProvider = ({ children }) => {
     const [selectedFormPag, setSelectedFormPag] = useState(0)
     const [selectedBanco, setSelectedBanco] = useState(0)
     const [selectedDiaVenc, setSelectedDiaVenc] = useState(0)
+    const [selectedDate, setSelectedDate] = useState(null)
 
     // Itens que vem da API
     const [selectUsuario, setSelectUsuario] = useState()
@@ -235,7 +236,8 @@ export const SaleProvider = ({ children }) => {
             handleChange,
             initialValues, values, setValues,
             loadingNewSale, loadingItensSale, loadingCEPSale,
-            getCEP, cepIten, setCepIten
+            getCEP, cepIten, setCepIten,
+            selectedDate, setSelectedDate
         }}>
             {children}
         </SaleContext.Provider>

@@ -5,6 +5,8 @@ import styles from "./style.module.scss"
 export const SaleCard = ({ sale }) => {
     const { setCurrentSale, getRegisterID, saleRegisterList, setSaleRegisterList } = useContext(ControlSaleContext)
 
+    const CPFeCNPJ = sale.cpf? sale.cpf : sale.cnpj
+
     const saleIten = (iten)=>{
         setCurrentSale(iten)
         getRegisterID(iten.id_venda)
@@ -12,7 +14,7 @@ export const SaleCard = ({ sale }) => {
     return (
         <li className={styles.saleCard} onClick={() => { saleIten({...sale})}} >
             <div>
-                <span className="paragraph grey1">{sale.cpf}
+                <span className="paragraph grey1">{CPFeCNPJ}
                 </span>
                 <span className="paragraph grey1">{sale.nome_cliente}
                 </span>

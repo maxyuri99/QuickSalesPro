@@ -10,6 +10,7 @@ import { MaskedInput } from "../InputMaskCPF"
 import { RadioSelector } from "../Radio"
 import { useEffect } from "react"
 import { toast } from "react-toastify"
+import { MyDatePicker } from "../InputDate"
 
 export const RegisterSaleForm = () => {
     const {
@@ -343,6 +344,11 @@ export const RegisterSaleForm = () => {
                         {...register("dt_nascimento")}
                         error={errors.dt_nascimento}
                         disabled={loadingNewSale}
+                    />
+                    <MyDatePicker
+                        label="Data"
+                        disabled={loadingNewSale}
+                        placeholder="Email do cliente"
                     />
                     <Input
                         label="Email"
