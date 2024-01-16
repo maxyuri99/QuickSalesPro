@@ -10,6 +10,7 @@ import { MaskedInput } from "../InputMaskCPF"
 import { RadioSelector } from "../Radio"
 import { useEffect } from "react"
 import { toast } from "react-toastify"
+import { MyDatePicker } from "../InputDate"
 
 export const RegisterSaleForm = () => {
     const {
@@ -18,7 +19,7 @@ export const RegisterSaleForm = () => {
         formState: { errors },
         reset,
     } = useForm({
-        resolver: zodResolver(registerSaleFormSchema(SaleContext))
+        resolver: zodResolver(registerSaleFormSchema())
     })
     const [errorVerify, setErrorVerify] = useState({
         hasError: false,
@@ -153,13 +154,13 @@ export const RegisterSaleForm = () => {
             return
         }
 
-        if (formData.agencia.length === 0 && selectedFormPag === 1) {
+        if (values.agencia.length === 0 && selectedFormPag === 1) {
             console.log("Erro: Agência inválida")
             toast.error("Agência deve ser preenchida")
             return
         }
 
-        if (formData.conta.length === 0 && selectedFormPag === 1) {
+        if (values.conta.length === 0 && selectedFormPag === 1) {
             console.log("Erro: Conta inválida")
             toast.error("Conta deve ser preenchida")
             return
@@ -183,11 +184,11 @@ export const RegisterSaleForm = () => {
                 selectBanco.find(objeto => objeto.id === selectedBanco).nome
             ) : (''),
             agencia: selectedFormPag === 1 ? (
-                formData.agencia 
-             ) : (''),
+                values.agencia
+            ) : (''),
             conta: selectedFormPag === 1 ? (
-                formData.conta
-             ) : (''),
+                values.conta
+            ) : (''),
             observacao: formData.observacao,
             nome: formData.nome,
             email: formData.email,
@@ -341,6 +342,11 @@ export const RegisterSaleForm = () => {
                         {...register("dt_nascimento")}
                         error={errors.dt_nascimento}
                         disabled={loadingNewSale}
+                    />
+                    <MyDatePicker
+                        label="Data"
+                        disabled={loadingNewSale}
+                        placeholder="Email do cliente"
                     />
                     <Input
                         label="Email"
@@ -518,16 +524,16 @@ export const RegisterSaleForm = () => {
                             <Input
                                 label="Agencia"
                                 type="number"
-                                {...register("agencia")}
-                                error={errors.agencia}
+                                name="agencia"
+                                onChange={handleChange}
                                 disabled={loadingNewSale}
                                 placeholder="Agencia do cliente"
                             />
                             <Input
                                 label="Conta"
                                 type="number"
-                                {...register("conta")}
-                                error={errors.conta}
+                                name="conta"
+                                onChange={handleChange}
                                 disabled={loadingNewSale}
                                 placeholder="Conta do cliente"
                             />

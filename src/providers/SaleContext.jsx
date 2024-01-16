@@ -23,14 +23,14 @@ const initialValues = {
     plano: 0,
     formpag: 0,
     banco: 0,
-    dia_venc: 0
+    dia_venc: 0,
+    agencia: 0,
+    conta: 0,
 }
 
 
 export const SaleProvider = ({ children }) => {
     const { userLogout } = useContext(UserContext)
-
-
 
     // ####### Pagina de nova venda ##########################
     const [dataFetched, setDataFetched] = useState(false)
@@ -45,6 +45,7 @@ export const SaleProvider = ({ children }) => {
     const [selectedFormPag, setSelectedFormPag] = useState(0)
     const [selectedBanco, setSelectedBanco] = useState(0)
     const [selectedDiaVenc, setSelectedDiaVenc] = useState(0)
+    const [selectedDate, setSelectedDate] = useState(null)
 
     // Itens que vem da API
     const [selectUsuario, setSelectUsuario] = useState()
@@ -235,7 +236,8 @@ export const SaleProvider = ({ children }) => {
             handleChange,
             initialValues, values, setValues,
             loadingNewSale, loadingItensSale, loadingCEPSale,
-            getCEP, cepIten, setCepIten
+            getCEP, cepIten, setCepIten,
+            selectedDate, setSelectedDate
         }}>
             {children}
         </SaleContext.Provider>
