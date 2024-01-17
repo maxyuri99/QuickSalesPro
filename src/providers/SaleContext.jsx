@@ -8,9 +8,6 @@ import { UserContext } from "./UserContext"
 
 export const SaleContext = createContext({})
 
-const localStorageID = localStorage.getItem("@USERID")
-const userID = parseInt(localStorageID, 10)
-
 const initialValues = {
     cpf: '',
     cnpj: '',
@@ -19,17 +16,20 @@ const initialValues = {
     telefone_2: '',
     telefone_3: '',
     cep: '',
-    vendedor: userID,
+    vendedor: 0,
     plano: 0,
     formpag: 0,
     banco: 0,
     dia_venc: 0,
-    agencia: 0,
-    conta: 0,
+    agencia: "",
+    conta: "",
 }
 
-
 export const SaleProvider = ({ children }) => {
+    const localStorageID = localStorage.getItem("@USERID")
+    const userID = parseInt(localStorageID, 10)
+
+
     const { userLogout } = useContext(UserContext)
 
     // ####### Pagina de nova venda ##########################
@@ -40,7 +40,8 @@ export const SaleProvider = ({ children }) => {
     const [selectedRadio, setSelectedRadio] = useState("cpf")
 
     // Item Selecionado
-    const [selectedUsuario, setSelectedUsuario] = useState(userID)
+    const [selectedUsuario, setSelectedUsuario] = useState(userID || 0)
+
     const [selectedProdutos, setSelectedProdutos] = useState(0)
     const [selectedFormPag, setSelectedFormPag] = useState(0)
     const [selectedBanco, setSelectedBanco] = useState(0)
@@ -208,20 +209,25 @@ export const SaleProvider = ({ children }) => {
         }
     }, [tokenEffect])
 
-    function selectChange(name, valueIten) {
+    const selectChange = (name, valueIten) => {
         setValues({
             ...values,
             [name]: valueIten
         })
     }
 
-    function handleChange(event) {
+    const handleChange = (event) => {
         setValues({
             ...values,
             [event.target.name]: event.target.value
         })
     }
 
+    useEffect(() => {
+        if (selectedUsuario !== undefined) {
+          setSelectedUsuario(userID)
+        }
+      }, [selectedUsuario]);
 
     return (
         <SaleContext.Provider value={{
