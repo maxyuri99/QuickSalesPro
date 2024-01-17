@@ -18,6 +18,7 @@ export const SaleListComp = () => {
         handleFilterClick,
         saleListFilter,
         handleUpdateList,
+        exportExcelFunc,
 
     } = useContext(ControlSaleContext)
 
@@ -72,7 +73,10 @@ export const SaleListComp = () => {
                         />
                     </div>
                 </div>
-                <div>
+                <div className={styles.divButtons}>
+                    <button className="btn solid primary" onClick={exportExcelFunc}>
+                        Exportar para Excel
+                    </button>
                     <button className="btn solid primary" onClick={handleFilterClick}>
                         Filtrar
                     </button>

@@ -4,6 +4,7 @@ import { createContext } from "react"
 import { apiQsp } from "../services/api"
 import { UserContext } from "./UserContext"
 import { toast } from "react-toastify"
+import { exportToExcel } from "../components/ExportExcel"
 
 export const ControlSaleContext = createContext({})
 
@@ -61,50 +62,56 @@ export const ControlSaleProvider = ({ children }) => {
     const [dataFinal, setDataFinal] = useState("")
 
     const handleFilterClick = () => {
+        try {
+            setLoadingListSales(true)
+            
+            const filtro = {
+                nome,
+                cpf_cnpj,
+                dataInicial,
+                dataFinal,
+                etapa:
+                    selectedEtapasFilter !== 0
+                        ? selectEtapas.find((objeto) => objeto.id_etapa === selectedEtapasFilter)?.nome
+                        : "Todos",
+            }
 
-        const filtro = {
-            nome,
-            cpf_cnpj,
-            dataInicial,
-            dataFinal,
-            etapa:
-                selectedEtapasFilter !== 0
-                    ? selectEtapas.find((objeto) => objeto.id_etapa === selectedEtapasFilter)?.nome
-                    : "Todos",
+            const filteredList = saleList.filter((sale) => {
+
+                const nomeValido =
+                    !filtro.nome ||
+                    (sale.nome_cliente &&
+                        sale.nome_cliente.toLowerCase().includes(filtro.nome.toLowerCase()))
+
+                const dataValida =
+                    (!filtro.dataInicial || new Date(sale.dt_ger) >= new Date(filtro.dataInicial)) &&
+                    (!filtro.dataFinal || new Date(sale.dt_ger) <= new Date(filtro.dataFinal))
+
+                const cpfSemCaEspeciais = sale.cpf ? sale.cpf.replace(/[^\d]/g, '') : ''
+                const cnpjSemCaEspeciais = sale.cnpj ? sale.cnpj.replace(/[^\d]/g, '') : ''
+
+                const cpfCnpjValido =
+                    (!filtro.cpf_cnpj && true) ||
+                    (cpfSemCaEspeciais.includes(filtro.cpf_cnpj) ||
+                        cnpjSemCaEspeciais.includes(filtro.cpf_cnpj))
+
+                const etapaValido =
+                    filtro.etapa === "Todos" ||
+                    (sale.nome_etapa && sale.nome_etapa.toLowerCase() === filtro.etapa.toLowerCase())
+
+                return nomeValido && dataValida && cpfCnpjValido && etapaValido
+            })
+
+
+            // Ordenar a lista filtrada pelo número da venda (id_venda) de forma decrescente
+            const sortedFilteredList = filteredList.sort((a, b) => b.id_venda - a.id_venda)
+
+            // Atualize a saleListFilter com os resultados da filtragem e ordenação
+            setSaleListFilter(sortedFilteredList)
+
+        } finally {
+            setLoadingListSales(false)
         }
-
-        const filteredList = saleList.filter((sale) => {
-
-            const nomeValido =
-                !filtro.nome ||
-                (sale.nome_cliente &&
-                    sale.nome_cliente.toLowerCase().includes(filtro.nome.toLowerCase()))
-
-            const dataValida =
-                (!filtro.dataInicial || new Date(sale.dt_ger) >= new Date(filtro.dataInicial)) &&
-                (!filtro.dataFinal || new Date(sale.dt_ger) <= new Date(filtro.dataFinal))
-
-            const cpfSemCaEspeciais = sale.cpf ? sale.cpf.replace(/[^\d]/g, '') : ''
-            const cnpjSemCaEspeciais = sale.cnpj ? sale.cnpj.replace(/[^\d]/g, '') : ''
-
-            const cpfCnpjValido =
-                (!filtro.cpf_cnpj && true) ||
-                (cpfSemCaEspeciais.includes(filtro.cpf_cnpj) ||
-                    cnpjSemCaEspeciais.includes(filtro.cpf_cnpj))
-
-            const etapaValido =
-                filtro.etapa === "Todos" ||
-                (sale.nome_etapa && sale.nome_etapa.toLowerCase() === filtro.etapa.toLowerCase())
-
-            return nomeValido && dataValida && cpfCnpjValido && etapaValido
-        })
-
-
-        // Ordenar a lista filtrada pelo número da venda (id_venda) de forma decrescente
-        const sortedFilteredList = filteredList.sort((a, b) => b.id_venda - a.id_venda)
-
-        // Atualize a saleListFilter com os resultados da filtragem e ordenação
-        setSaleListFilter(sortedFilteredList)
 
     }
 
@@ -325,7 +332,7 @@ export const ControlSaleProvider = ({ children }) => {
         }
     }, [])
 
-    function selectChange(name, valueIten) {
+    const selectChange = (name, valueIten) => {
         setValues({
             ...values,
             [name]: valueIten
@@ -349,6 +356,56 @@ export const ControlSaleProvider = ({ children }) => {
             console.error(error)
         }
     }
+
+    const exportExcelFunc = () => {
+        if (!saleListFilter || saleListFilter.length === 0) {
+            return;
+        }
+
+        // Mapear e transformar os dados antes de exportar
+        const transformedData = saleListFilter.map(item => ({
+            id_venda: item.id_venda,
+            nome_cliente: item.nome_cliente,
+            cpf: item.cpf,
+            cnpj: item.cnpj,
+            cnpj_socio: item.cnpj_socio,
+            email: item.email,
+            dt_nascimento: new Date(item.dt_nascimento).toLocaleDateString(),
+            telefone_1: item.telefone_1,
+            cep: item.cep,
+            endereco: item.endereco,
+            numero_end: item.numero_end,
+            complemento_end: item.complemento_end,
+            bairro: item.bairro,
+            cidade: item.cidade,
+            uf: item.uf,
+            nome_mae: item.nome_mae,
+            plano: item.nome_produto,
+            etapa: item.nome_etapa,
+            periodo: item.periodo,
+            form_pag: item.form_pag,
+            dia_venc: item.dia_venc,
+            banco: item.banco,
+            agencia: item.agencia,
+            conta: item.conta,
+            dt_geracao: new Date(item.dt_ger).toLocaleDateString(),
+            usuario_geracao: item.nome_usuario,
+            dt_instalacao: new Date(item.dt_instalacao).toLocaleDateString(),
+            dt_cancelamento: new Date(item.dt_cancelamento).toLocaleDateString(),
+            dt_alt: new Date(item.dt_alt).toLocaleDateString(),
+            observacao: item.observacao
+        }))
+
+        // Ordenar os dados
+        transformedData.sort((a, b) => a.id_venda - b.id_venda);
+
+        //console.log(transformedData)
+
+        // Exportar os dados transformados
+        exportToExcel(transformedData)
+    }
+
+
 
     return (
         <ControlSaleContext.Provider value={{
@@ -380,7 +437,8 @@ export const ControlSaleProvider = ({ children }) => {
             itensPatch, setItensPatch,
             handleUpdateList, patchSale,
             loadingListSales,
-            getRegisterID, saleRegisterList, setSaleRegisterList
+            getRegisterID, saleRegisterList, setSaleRegisterList,
+            exportExcelFunc
         }}>
             {children}
         </ControlSaleContext.Provider>

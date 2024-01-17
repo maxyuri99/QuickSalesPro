@@ -113,7 +113,7 @@ export const SaleEditModal = () => {
         compareAndLogChange("telefone_3", data.telefone_3, currentSale.telefone_3, "cliente")
         compareAndLogChange("cep", data.cep, currentSale.cep, "cliente")
         compareAndLogChange("endereco", data.rua, currentSale.endereco, "cliente")
-        compareAndLogChange("numero", data.numero, currentSale.numero_end, "cliente")
+        compareAndLogChange("numero_end", data.numero, currentSale.numero_end, "cliente")
         compareAndLogChange("complemento_end", data.complemento, currentSale.complemento_end, "cliente")
         compareAndLogChange("bairro", data.bairro, currentSale.bairro, "cliente")
         compareAndLogChange("cidade", data.cidade, currentSale.cidade, "cliente")
@@ -145,7 +145,7 @@ export const SaleEditModal = () => {
         compareAndLogChange("telefone_3", data.telefone_3, currentSale.telefone_3, "register")
         compareAndLogChange("cep", data.cep, currentSale.cep, "register")
         compareAndLogChange("endereco", data.rua, currentSale.endereco, "register")
-        compareAndLogChange("numero", data.numero, currentSale.numero_end, "register")
+        compareAndLogChange("numero_end", data.numero, currentSale.numero_end, "register")
         compareAndLogChange("complemento_end", data.complemento, currentSale.complemento_end, "register")
         compareAndLogChange("bairro", data.bairro, currentSale.bairro, "register")
         compareAndLogChange("cidade", data.cidade, currentSale.cidade, "register")
@@ -169,6 +169,7 @@ export const SaleEditModal = () => {
         if (Object.keys(arrayPatch.cliente).length === 0 && Object.keys(arrayPatch.venda).length === 0) {
             toast.info("Nenhum item foi alterado!")
         } else {
+            //console.log(arrayPatch)
             patchSale(currentSale.id_venda, arrayPatch)
             closeModal()
         }

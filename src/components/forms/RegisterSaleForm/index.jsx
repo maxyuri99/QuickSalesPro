@@ -10,7 +10,6 @@ import { MaskedInput } from "../InputMaskCPF"
 import { RadioSelector } from "../Radio"
 import { useEffect } from "react"
 import { toast } from "react-toastify"
-import { MyDatePicker } from "../InputDate"
 
 export const RegisterSaleForm = () => {
     const {
@@ -34,7 +33,7 @@ export const RegisterSaleForm = () => {
         setSelectedDiaVenc, setSelectedBanco, values, setValues, initialValues,
 
         selectChange, selectedRadio, setSelectedRadio,
-        handleChange,
+        handleChange, userID,
 
         selectUsuario, selectProdutos, selectFormPag, selectDiaVenc, selectBanco,
         loadingNewSale, saleRegister, getCEP, cepIten, setCepIten } = useContext(SaleContext)
@@ -45,7 +44,6 @@ export const RegisterSaleForm = () => {
     ]
 
     const submit = (formData) => {
-
         setErrorVerify({
             hasError: false,
             errorField: null,
@@ -103,6 +101,7 @@ export const RegisterSaleForm = () => {
             return
         }
 
+        values.vendedor = selectedUsuario
 
         if (values.vendedor === 0) {
             console.log("Erro: Vendedor inválido")
@@ -210,6 +209,7 @@ export const RegisterSaleForm = () => {
             dia_venc: selectedDiaVenc,
         }
 
+        //console.log(vendaData)
         saleRegister(vendaData)
 
         document.documentElement.scrollTo({
@@ -229,7 +229,7 @@ export const RegisterSaleForm = () => {
 
         setSelectedFormPag(0)
         setSelectedProdutos(0)
-        setSelectedUsuario(0)
+        setSelectedUsuario(selectedUsuario || 0)
         setSelectedBanco(0)
         setSelectedDiaVenc(0)
 
@@ -269,7 +269,6 @@ export const RegisterSaleForm = () => {
                     {selectedRadio === "cpf" && (
                         <>
                             <MaskedInput
-                                type="number"
                                 label="CPF"
                                 name="cpf"
                                 mask="999.999.999-99"
@@ -301,7 +300,6 @@ export const RegisterSaleForm = () => {
                     {selectedRadio === "cnpj" && (
                         <>
                             <MaskedInput
-                                type="number"
                                 label="CNPJ"
                                 name="cnpj"
                                 mask="99.999.999/9999-99"
@@ -314,7 +312,6 @@ export const RegisterSaleForm = () => {
                             />
 
                             <MaskedInput
-                                type="number"
                                 label="CPF Sócio"
                                 name="cpf_socio"
                                 mask="999.999.999-99"
@@ -343,11 +340,6 @@ export const RegisterSaleForm = () => {
                         error={errors.dt_nascimento}
                         disabled={loadingNewSale}
                     />
-                    <MyDatePicker
-                        label="Data"
-                        disabled={loadingNewSale}
-                        placeholder="Email do cliente"
-                    />
                     <Input
                         label="Email"
                         type="text"
@@ -357,7 +349,6 @@ export const RegisterSaleForm = () => {
                         placeholder="Email do cliente"
                     />
                     <MaskedInput
-                        type="number"
                         label="Telefone Principal"
                         name="telefone_1"
                         mask="(99)9 9999-9999"
@@ -369,7 +360,6 @@ export const RegisterSaleForm = () => {
                         setErrorVerify={setErrorVerify}
                     />
                     <MaskedInput
-                        type="number"
                         label="Telefone Residencial"
                         name="telefone_2"
                         mask="(99) 9999-9999"
@@ -381,7 +371,6 @@ export const RegisterSaleForm = () => {
                         setErrorVerify={setErrorVerify}
                     />
                     <MaskedInput
-                        type="number"
                         label="Telefone Reserva"
                         name="telefone_3"
                         mask="(99)9 9999-9999"
@@ -393,7 +382,6 @@ export const RegisterSaleForm = () => {
                         setErrorVerify={setErrorVerify}
                     />
                     <MaskedInput
-                        type="number"
                         label="CEP"
                         name="cep"
                         mask="99999-999"
