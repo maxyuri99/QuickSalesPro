@@ -343,11 +343,11 @@ export const RegisterSaleForm = () => {
                         error={errors.dt_nascimento}
                         disabled={loadingNewSale}
                     />
-                    <MyDatePicker
+                    {/* <MyDatePicker
                         label="Data"
                         disabled={loadingNewSale}
                         placeholder="Email do cliente"
-                    />
+                    /> */}
                     <Input
                         label="Email"
                         type="text"
