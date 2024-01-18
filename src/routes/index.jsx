@@ -14,6 +14,7 @@ import { SaleProvider } from "../providers/SaleContext"
 import { useContext } from "react"
 import { UserContext } from "../providers/UserContext"
 import { ControlSaleProvider } from '../providers/ControlSaleContext'
+import { VendasPorUsuario } from "../pages/VendasUsuarios"
 
 
 export const RoutesMain = () => {
@@ -40,6 +41,7 @@ export const RoutesMain = () => {
                 {(user.cargo !== 0) ? (
                     <>
                         <Route path="/quicksalespro/nova_venda" element={<SaleProvider><NovaVenda /></SaleProvider>} />
+                        <Route path="/quicksalespro/minhas_vendas" element={<ControlSaleProvider><VendasPorUsuario /></ControlSaleProvider>} />
                     </>
                 ) : null}
 
