@@ -1,0 +1,28 @@
+.saleCard {
+    padding: 20px 0;
+    border-bottom: 1px solid var(--grey-2);
+
+    cursor: pointer;
+
+    &:hover {
+        background: var(--color-primary);
+    }
+
+    &>div:first-child {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 5px;
+
+        span {
+            width: 150px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+    }
+
+    p {
+        margin-top: 30px;
+    }
+}
