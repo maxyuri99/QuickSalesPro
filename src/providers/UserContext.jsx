@@ -35,7 +35,7 @@ export const UserProvider = ({ children }) => {
         } catch (error) {
             setUser({ cargo: 0 })
             console.log(error)
-            userLogout("Sessão expirada1. Faça login novamente.")
+            userLogout("Sessão expirada. Faça login novamente.")
         } finally {
             setLoading(false)
         }

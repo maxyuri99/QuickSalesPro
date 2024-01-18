@@ -14,12 +14,16 @@ const initialValues = {
 }
 
 export const ControlSaleProvider = ({ children }) => {
-    const { userLogout } = useContext(UserContext)
+    const { userLogout, user } = useContext(UserContext)
     const [values, setValues] = useState(initialValues)
 
     const [saleList, setSaleList] = useState([])
     const [saleListFilter, setSaleListFilter] = useState([])
     const [loadingListSales, setLoadingListSales] = useState(false)
+
+    const [saleListUserID, setSaleListUserID] = useState([])
+    const [saleListUserIDFilter, setSaleListUserIDFilter] = useState([])
+    const [loadingListUserID, setLoadingListUserID] = useState(false)
 
     const [saleRegisterList, setSaleRegisterList] = useState([])
 
@@ -64,7 +68,7 @@ export const ControlSaleProvider = ({ children }) => {
     const handleFilterClick = () => {
         try {
             setLoadingListSales(true)
-            
+
             const filtro = {
                 nome,
                 cpf_cnpj,
@@ -115,6 +119,14 @@ export const ControlSaleProvider = ({ children }) => {
 
     }
 
+    const handleFilterUserIDClick = () => {
+
+        // Ordenar a lista filtrada pelo número da venda (id_venda) de forma decrescente
+        const FilteredList = saleListUserID.sort((a, b) => b.id_venda - a.id_venda)
+        // Atualize a saleListFilter com os resultados da filtragem e ordenação
+        setSaleListUserIDFilter(FilteredList)
+    }
+
     useEffect(() => {
         const dataAtual = new Date()
 
@@ -147,7 +159,7 @@ export const ControlSaleProvider = ({ children }) => {
 
     const getRegisterID = async (id_venda) => {
         try {
-
+            setLoadingListUserID(true)
             const { data } = await apiQsp.get(`/v1/vendas/register/${id_venda}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -159,7 +171,25 @@ export const ControlSaleProvider = ({ children }) => {
         } catch (error) {
             console.error('Erro ao buscar registro de alteração:', error)
         } finally {
+            setLoadingListUserID(false)
+        }
+    }
 
+    const getSaleUserID = async (id_user) => {
+        try {
+            setLoadingListUserID(true)
+            const { data } = await apiQsp.get(`/v1/vendas/user/${id_user}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+
+            setSaleListUserID(data)
+
+        } catch (error) {
+            console.error('Erro ao buscar registro de venda por usuario:', error)
+        } finally {
+            setLoadingListUserID(false)
         }
     }
 
@@ -204,6 +234,26 @@ export const ControlSaleProvider = ({ children }) => {
 
         fetchData()
     }, [saleList])
+
+    useEffect(() => {
+        const fetchData = () => {
+            try {
+                setLoadingListUserID(true)
+
+                if (saleListUserID.length === 0) {
+                    getSaleUserID(user.id_usuario)
+                }
+
+                handleFilterUserIDClick()
+            } catch (error) {
+                console.error(error)
+            } finally {
+                setLoadingListUserID(false)
+            }
+        }
+
+        fetchData()
+    }, [saleListUserID])
 
     useEffect(() => {
 
@@ -357,6 +407,15 @@ export const ControlSaleProvider = ({ children }) => {
         }
     }
 
+    const handleUpdateListUserID = () => {
+        try {
+            getSaleUserID(user.id_usuario)
+            handleFilterUserIDClick()
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
     const exportExcelFunc = () => {
         if (!saleListFilter || saleListFilter.length === 0) {
             return;
@@ -405,12 +464,14 @@ export const ControlSaleProvider = ({ children }) => {
         exportToExcel(transformedData)
     }
 
-
-
     return (
         <ControlSaleContext.Provider value={{
             saleList, getSales, selectChange,
             errorVerify, setErrorVerify,
+
+            saleListUserID, setSaleListUserID, handleUpdateListUserID,
+            saleListUserIDFilter, setSaleListUserIDFilter,
+            loadingListUserID, setLoadingListUserID,
 
             selectedEtapas,
             setSelectedEtapas,
