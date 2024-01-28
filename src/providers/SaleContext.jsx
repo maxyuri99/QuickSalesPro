@@ -25,6 +25,7 @@ const initialValues = {
     conta: "",
 }
 
+// eslint-disable-next-line react/prop-types
 export const SaleProvider = ({ children }) => {
     const localStorageID = localStorage.getItem("@USERID")
     const userID = parseInt(localStorageID, 10)

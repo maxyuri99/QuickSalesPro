@@ -20,8 +20,12 @@
   }
 
   @media (min-width: 769px) {
-    
   }
+}
+
+.liSelected {
+  border-radius: 6px;
+  background-color: var(--grey-2);
 }
 
 .headerPages {
@@ -42,7 +46,7 @@
     justify-content: center;
   }
 
-  li{
+  li {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -50,12 +54,11 @@
     padding: 2px;
     gap: 13px;
   }
-  
+
   li:hover {
     border-radius: 6px;
     background-color: var(--grey-3);
   }
-
 
   @media (min-width: 769px) {
     position: relative;
@@ -76,17 +79,16 @@
       margin-bottom: 0;
       margin-left: 15px;
     }
-
   }
 }
 
-.divQuick{
+.divQuick {
   display: flex;
   justify-content: center;
   align-items: center;
 
   padding: 10px;
-  margin:  0 10px 0 10px ;
+  margin: 0 10px 0 10px;
 
   border-bottom: 1px solid var(--grey-1);
 }

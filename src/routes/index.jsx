@@ -28,7 +28,7 @@ export const RoutesMain = () => {
             </Route>
             <Route element={<PrivateRoutes />}>
 
-                <Route path='/quicksalespro/dashboard' element={<Dashboard />} />
+                {/* <Route path='/quicksalespro/dashboard' element={<Dashboard />} /> */}
                 {(user.cargo === 1 || user.cargo === 4 || user.cargo === 5) ? (
                     <>
                         <Route path="/quicksalespro/controle_vendas" element={<ControlSaleProvider> <ControleVendas /> </ControlSaleProvider>} />

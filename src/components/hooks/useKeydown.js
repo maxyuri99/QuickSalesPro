@@ -4,7 +4,7 @@ export const useKeydown = (key, callback) => {
    const ref = useRef();
 
    useEffect(() => {
-      const handleKeydown = (event) => {;
+      const handleKeydown = (event) => {
          if (event.key === key) {      
             callback({event, currentTarget: ref.current});
          }
