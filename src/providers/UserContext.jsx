@@ -6,6 +6,7 @@ import { toast } from "react-toastify"
 
 export const UserContext = createContext({})
 
+// eslint-disable-next-line react/prop-types
 export const UserProvider = ({ children }) => {
     const [user, setUser] = useState({ cargo: 0 })
     const [loading, setLoading] = useState(false)
@@ -94,9 +95,7 @@ export const UserProvider = ({ children }) => {
             userLogout()
             const errorMessage = JSON.stringify(error.response?.data.erro)
             console.log(errorMessage)
-        } finally {
-
-        }
+        } 
     }
 
     useEffect(() => {

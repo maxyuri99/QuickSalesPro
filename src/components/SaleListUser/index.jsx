@@ -5,7 +5,6 @@ import { SaleUserCard } from "./SaleUserCard"
 
 export const SaleListUserComp = () => {
     const {
-        saleListUserID, 
         handleUpdateListUserID,
         saleListUserIDFilter,
     } = useContext(ControlSaleContext)
