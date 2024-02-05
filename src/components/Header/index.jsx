@@ -9,6 +9,7 @@ import {
   LiaCartPlusSolid,
   LiaClipboardSolid,
 } from "react-icons/lia";
+import { Button } from "../ui/button";
 
 export const Header = ({ children }) => {
   const { user, userLogout, isHeaderExpanded, setHeaderExpanded } =
@@ -20,12 +21,9 @@ export const Header = ({ children }) => {
     <div className="container">
       <div className={styles.headerUser}>
         <div>
-          <LiaBarsSolid
-            className="title bold grey1 click"
-            onClick={() => {
-              setHeaderExpanded(!isHeaderExpanded);
-            }}
-          />
+          <Button variant="defaultVariants">
+            <LiaBarsSolid className="h-8 w-8 text-slate-50 hover:text-slate-500" />
+          </Button>
         </div>
         <div>
           <LiaUserCircleSolid className="title bold grey1" />
@@ -39,12 +37,6 @@ export const Header = ({ children }) => {
           </div>
           <nav>
             <ul>
-              {/* <li>
-                <LiaChalkboardSolid className="paragraph big" />
-                <Link to="/quicksalespro/dashboard" className="paragraph small">
-                  Dashboard
-                </Link>
-              </li> */}
               <h2 className="paragraph bold">Vendas:</h2>
               {user.cargo === 1 || user.cargo === 4 || user.cargo === 5 ? (
                 <li
@@ -99,16 +91,39 @@ export const Header = ({ children }) => {
                 </>
               ) : null}
 
-              <button
+              {user.cargo === 1 || user.cargo === 4 || user.cargo === 5 ? (
+                <>
+                  <h2 className="paragraph bold">Usuários:</h2>
+                  <li
+                    className={
+                      caminhoEQuery === "/quicksalespro/usuarios"
+                        ? styles.liSelected
+                        : ""
+                    }
+                  >
+                    <LiaClipboardListSolid className="paragraph big" />
+                    <Link
+                      to="/quicksalespro/usuarios"
+                      className="paragraph small"
+                    >
+                      Controle de Usuários
+                    </Link>
+                  </li>
+                </>
+              ) : null}
+
+              <Button
+                variant="destructive"
                 onClick={() => userLogout("Logout feito com sucesso!")}
-                className="btn solid negative hover "
               >
                 Sair
-              </button>
+              </Button>
             </ul>
           </nav>
         </div>
-        <div className="divChildren">{children}</div>
+        <div className="divChildren w-full md:w-[calc(100% - 280px)]">
+          {children}
+        </div>
       </div>
     </div>
   );

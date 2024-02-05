@@ -4,7 +4,7 @@ import { createContext } from "react";
 import { apiQsp } from "../services/api";
 import { UserContext } from "./UserContext";
 import { toast } from "react-toastify";
-import { exportToExcel } from "../components/ExportExcel";
+import { exportToExcel } from "../components/ExportExcel/exportExcelTop";
 
 export const ControlSaleContext = createContext({});
 
@@ -150,7 +150,6 @@ export const ControlSaleProvider = ({ children }) => {
     diaFinal.setDate(dataAtual.getDate() + 1);
     const formattedDiaFinal = diaFinal.toISOString().split("T")[0];
     setDataFinal(formattedDiaFinal);
-    
   }, []);
 
   const getSales = async () => {

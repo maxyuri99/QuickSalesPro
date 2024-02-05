@@ -48,38 +48,24 @@ export type Sales = {
 };
 
 export const columns: ColumnDef<Sales>[] = [
-  {
-    id: "actions",
-    cell: ({ row }) => {
-      const { setCurrentSale, getRegisterID } = useContext(ControlSaleContext);
-      const sale = row.original;
+  // {
+  //   id: "actions",
+  //   cell: ({ row }) => {
+  //     const { setCurrentSale, getRegisterID } = useContext(ControlSaleContext);
+  //     const sale = row.original;
 
-      const saleIten = (iten: any) => {
-        setCurrentSale(iten);
-        getRegisterID(iten.id_venda);
-      };
+  //     const saleIten = (iten: any) => {
+  //       setCurrentSale(iten);
+  //       getRegisterID(iten.id_venda);
+  //     };
 
-      return (
-        <Button onClick={() => saleIten(sale)}>
-          <Pencil className="w-4" />
-        </Button>
-      );
-    },
-  },
-  {
-    accessorKey: "id_venda",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          ID
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-  },
+  //     return (
+  //       <Button onClick={() => saleIten(sale)}>
+  //         <Pencil className="w-4" />
+  //       </Button>
+  //     );
+  //   },
+  // },
   {
     accessorKey: "cpf",
     header: "CPF/CNPJ",

@@ -1,9 +1,12 @@
 import { useContext } from "react";
 import { ControlSaleContext } from "../../providers/ControlSaleContext";
-import { SaleCard } from "./SaleCard";
 import styles from "./style.module.scss";
 import { Input } from "../forms/Input";
 import { Select } from "../forms/Select";
+import { Button } from "../ui/button";
+import { DataTable } from "../ui/data-table";
+import { columns } from "./colum";
+import { Search } from "lucide-react";
 
 export const SaleListComp = () => {
   const {
@@ -33,9 +36,9 @@ export const SaleListComp = () => {
     <div className={styles.saleListDiv}>
       <div>
         <h1 className="title grey0">Controle de Vendas</h1>
-        <button onClick={handleUpdateList} className="btn solid primary small">
+        <Button variant="secondary" onClick={handleUpdateList}>
           Atualizar Lista
-        </button>
+        </Button>
       </div>
       <div className={styles.filterDivAll}>
         <div className={styles.filterDivItens}>
@@ -83,37 +86,16 @@ export const SaleListComp = () => {
           </div>
         </div>
         <div className={styles.divButtons}>
-          <button className="btn solid primary" onClick={exportExcelFunc}>
+          <Button variant="secondary" onClick={exportExcelFunc}>
             Exportar para Excel
-          </button>
-          <button className="btn solid primary" onClick={handleFilterClick}>
+          </Button>
+          <Button variant="secondary" onClick={handleFilterClick}>
+            <Search className="h-4 w-4 mr-3" />
             Filtrar
-          </button>
+          </Button>
         </div>
       </div>
-      <ul>
-        <section className={styles.sectionAllTabel}>
-          <div className={styles.saleTitles}>
-            <span className="paragraph grey1">CPF/CNPJ:</span>
-            <span className="paragraph grey1">Cliente:</span>
-            <span className="paragraph grey1">Nome Consultor:</span>
-            <span className="paragraph grey1">Plano: </span>
-            <span className="paragraph grey1">Etapa: </span>
-            <span className="paragraph grey1">Data Geração:</span>
-          </div>
-          <div className={styles.divSaleCard}>
-            {saleListFilter && saleListFilter.length > 0 ? (
-              saleListFilter.map((sale) => (
-                <SaleCard key={sale.id_venda} sale={sale} />
-              ))
-            ) : (
-              <h1 className={`paragraph negative ${styles.noRegisterH1}`}>
-                Nenhum registro encontrado!
-              </h1>
-            )}
-          </div>
-        </section>
-      </ul>
+      <DataTable columns={columns} data={saleListFilter} />
     </div>
   );
 };
